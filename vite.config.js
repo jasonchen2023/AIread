@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import eslint from 'vite-plugin-eslint';
 import autoprefixer from 'autoprefixer';
-import ViteFaviconsPlugin from 'vite-plugin-favicon';
+import ViteFaviconsPlugin from 'vite-plugin-favicon2';
 import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
