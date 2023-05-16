@@ -14,7 +14,7 @@ AIread is a Single-Page Application built using React and Vite. It interacts wit
 
 ## Setup
 
-`npm install` and then `npm run dev`
+To run the app locally, `npm install` and then `npm run dev`
 
 ## Deployment
 
