@@ -5,10 +5,9 @@ export default function Nav(props) {
   return (
     <nav>
       <ul>
-        <li><NavLink to="/">Home</NavLink></li>
-        <li><NavLink to="/about">About</NavLink></li>
-        <li><NavLink to="/test/id1">test id1</NavLink></li>
-        <li><NavLink to="/test/id2">test id2</NavLink></li>
+        <li><NavLink to="/home">Home</NavLink></li>
+        <li><NavLink to="/home/reading/1">Econ Reading</NavLink></li>
+        <li><NavLink to="/">Logout</NavLink></li>
       </ul>
     </nav>
   );
