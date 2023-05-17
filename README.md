@@ -11,6 +11,7 @@ AIread is a web application and learning and note-taking platform that allows us
 
 AIread is a Single-Page Application built using React and Vite. It interacts with a node + express backend (https://github.com/dartmouth-cs52-23s/project-airead-api) and will utilize OpenAI language models in order to perform text summary / analysis and other text-related tasks.
 
+We are planning to use S3 to store all the data and text.
 
 ## Setup
 
