@@ -23,6 +23,9 @@ Settings for render.com:
 * build command:  `npm install && npm run build`
 * publish directory: `dist`
 
+## URL
+https://project-airead.onrender.com/
+
 ## Authors
 
 * Jason Chen
