@@ -38,7 +38,7 @@ export default function Landing(props) {
   );
 
   return (
-    <div>
+    <div className="page">
       {sectionContainer}
     </div>
   );

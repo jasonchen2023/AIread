@@ -1,6 +1,5 @@
 @use '../../utils/colors' as c;
 
-
 .page {
   display: flex;
   flex-direction: column;
@@ -22,5 +21,9 @@
 
   p {
     font-size: 24px;
+  }
+
+  .faIcon {
+    font-size: 96px;
   }
 }
