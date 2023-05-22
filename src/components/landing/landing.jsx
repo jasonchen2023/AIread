@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  SectionsContainer, Section,
+  SectionsContainer, Section, ScrollToTopOnMount,
 } from 'react-fullpage';
 import AIreadIntro from '../aiReadIntro/aiReadIntro';
 import AIreadTitle from '../aiReadTitle/aiReadTitle';
@@ -38,8 +38,12 @@ export default function Landing(props) {
   );
 
   return (
-    <div className="page">
-      {sectionContainer}
-    </div>
+    <>
+      <ScrollToTopOnMount />
+      <div className="page">
+        {sectionContainer}
+      </div>
+    </>
+
   );
 }

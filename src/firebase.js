@@ -24,9 +24,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export const auth = getAuth(app);
 
-export function createUserDoc(uid, email, displayName, age) {
+export function createUserDoc(email, displayName, age) {
   return (dispatch) => {
-    setDoc(doc(db, 'Users', `${uid}`), {
+    setDoc(doc(db, 'Users', `${auth.currentUser.uid}`), {
       email,
       displayName,
       age,
@@ -40,9 +40,9 @@ export function createUserDoc(uid, email, displayName, age) {
   };
 }
 
-export function fetchUserDoc(uid) {
+export function fetchUserDoc() {
   return (dispatch) => {
-    getDoc(doc(db, 'Users', uid)).then((docSnap) => {
+    getDoc(doc(db, 'Users', auth.currentUser.uid)).then((docSnap) => {
       dispatch({
         type: ActionTypes.SET_USER,
         payload: docSnap.data(),
@@ -51,31 +51,42 @@ export function fetchUserDoc(uid) {
   };
 }
 
-export function login(email, password) {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      fetchUserDoc(userCredential.user.uid);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+export function login(email, password, errorCallback, navigate) {
+  return (dispatch) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        navigate('/');
+      })
+      .catch((error) => {
+        errorCallback(error.message);
+      });
+  };
 }
 
-export function signup(email, password, displayName, age) {
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      updateProfile(auth.currentUser, {
-        displayName,
-      }).then(() => {
-        createUserDoc(
-          auth.currentUser.uid,
-          email,
+export function signup(email, password, displayName, age, errorCallback) {
+  return (dispatch) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        updateProfile(auth.currentUser, {
           displayName,
-          age,
-        );
+        }).then(() => {
+          dispatch(createUserDoc(
+            email,
+            displayName,
+            age,
+          ));
+        });
+      })
+      .catch((error) => {
+        errorCallback(error.message);
       });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  };
+}
+
+export function logOut(navigate) {
+  return (dispatch) => {
+    dispatch({ type: ActionTypes.HIDE_USER });
+    auth.signOut();
+    navigate('/');
+  };
 }
