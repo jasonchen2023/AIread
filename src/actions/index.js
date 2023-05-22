@@ -2,6 +2,7 @@
 export const ActionTypes = {
   INCREMENT: 'INCREMENT',
   DECREMENT: 'DECREMENT',
+  SET_USER: 'SET_USER',
 };
 
 export function increment() {

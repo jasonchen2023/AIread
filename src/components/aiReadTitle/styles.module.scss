@@ -1,0 +1,29 @@
+@use '../../utils/colors' as c;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  background-color: c.$aiLightBlue;
+
+  h1 {
+    margin: 0;
+    font-size: 96px;
+    font-weight: 700;
+
+    .ai {
+      color: c.$aiPink;
+    }
+  }
+
+  p {
+    font-size: 24px;
+  }
+
+  .faIcon {
+    font-size: 96px;
+  }
+}
