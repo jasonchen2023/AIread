@@ -1,0 +1,105 @@
+@use '../../utils/colors' as c;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  background-color: c.$aiLightBlue;
+
+  .loginSignupPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 30px;
+    border-radius: 30px;
+    width: 40vw;
+    background-color: c.$aiComponentBlue;
+
+    .panelFields {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+
+      input {
+        border: none;
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 16px;
+        width: 100%;
+      }
+
+      .ageRow {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-self: flex-start;
+        gap: 10px;
+
+        input {
+          width: 50%;
+        }
+      }
+    }
+
+    button {
+      width: 60%;
+      background-color: c.$aiOrange;
+      border: none;
+      height: 50px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    button:hover {
+      cursor: pointer;
+      filter: brightness(85%);
+    }
+
+    h2 {
+      margin: 0px;
+    }
+
+    p {
+      margin: 0px;
+      font-size: 16px;
+
+      .signupLoginSpan {
+        color: c.$aiOrange;
+      }
+
+      .signupLoginSpan:hover {
+        cursor: pointer;
+      }
+    }
+
+    hr {
+      color: black;
+      height: 1px;
+      width: 70%;
+      background-color: black;
+      border-color: black;
+    }
+
+    .errorText {
+      color: red;
+    }
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 96px;
+    font-weight: 700;
+
+    .ai {
+      color: c.$aiPink;
+    }
+  }
+}

@@ -1,9 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import CountReducer from './count-reducer';
+import UserReducer from './userReducer';
 
 const rootReducer = combineReducers({
-  count: CountReducer,
+  user: UserReducer,
 });
 
 export default rootReducer;
