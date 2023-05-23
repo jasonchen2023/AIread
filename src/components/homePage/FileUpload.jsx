@@ -109,6 +109,7 @@ function FileUpload() {
     } else {
       uploadFile(file)
         .then((downloadURL) => {
+          window.location.reload();
           console.log('Download URL:', downloadURL);
           // Handle the download URL (save it to state, send it to the server, etc.)
         })
