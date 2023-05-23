@@ -2,11 +2,12 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles.module.scss';
+import background from '../../assets/background2.svg';
 import aiIntro from '../../assets/aiReadDemo.png';
 
 export default function AIreadIntro(props) {
   return (
-    <div className={styles.page}>
+    <div className={styles.page} style={{ backgroundImage: `url(${background}` }}>
       <div className={styles.titleImgRow}>
         <div className={styles.introTextContainer}>
           <h1>

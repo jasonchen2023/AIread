@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './styles.module.scss';
+import background from '../../assets/background3.svg';
 import { login, signup } from '../../firebase';
 
 export default function LoginSignup(props) {
@@ -85,7 +86,7 @@ export default function LoginSignup(props) {
   };
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} style={{ backgroundImage: `url(${background}` }}>
       <h1>
         <span className={styles.ai}>AI</span>read
       </h1>
