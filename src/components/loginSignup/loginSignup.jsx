@@ -38,7 +38,7 @@ export default function LoginSignup(props) {
   };
 
   const handleLogin = () => {
-    dispatch(login(email, password, updateError));
+    dispatch(login(email, password, updateError, props.fullpageApi));
   };
 
   const handleSignup = () => {
@@ -46,7 +46,7 @@ export default function LoginSignup(props) {
       setError('Please fill out all fields!');
       return;
     }
-    dispatch(signup(email, password, displayName, parseInt(age, 10), updateError));
+    dispatch(signup(email, password, displayName, parseInt(age, 10), updateError, props.fullpageApi));
   };
 
   const loginPanel = () => {

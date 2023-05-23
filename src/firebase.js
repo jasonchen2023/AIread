@@ -51,11 +51,11 @@ export function fetchUserDoc() {
   };
 }
 
-export function login(email, password, errorCallback, navigate) {
+export function login(email, password, errorCallback, fullpageApi) {
   return (dispatch) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        navigate('/');
+        fullpageApi.silentMoveTo(1);
       })
       .catch((error) => {
         errorCallback(error.message);
@@ -63,10 +63,11 @@ export function login(email, password, errorCallback, navigate) {
   };
 }
 
-export function signup(email, password, displayName, age, errorCallback) {
+export function signup(email, password, displayName, age, errorCallback, fullpageApi) {
   return (dispatch) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        fullpageApi.silentMoveTo(1);
         updateProfile(auth.currentUser, {
           displayName,
         }).then(() => {
@@ -87,6 +88,5 @@ export function logOut(navigate) {
   return (dispatch) => {
     dispatch({ type: ActionTypes.HIDE_USER });
     auth.signOut();
-    navigate('/');
   };
 }
