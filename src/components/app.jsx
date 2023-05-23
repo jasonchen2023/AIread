@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 import Reading from './reading';
 import FallBack from './fallback';
-import Home from './home';
+import Home from './homePage/home';
 import { auth } from '../firebase';
 import Landing from './landing/landing';
 

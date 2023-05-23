@@ -5,6 +5,9 @@ import {
 import {
   doc, getDoc, getFirestore, setDoc,
 } from 'firebase/firestore';
+import {
+  getStorage, ref, uploadBytes, getDownloadURL, listAll,
+} from 'firebase/storage';
 import { ActionTypes } from './actions';
 
 // Your web app's Firebase configuration
@@ -22,6 +25,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage();
 export const auth = getAuth(app);
 
 export function createUserDoc(email, displayName, age) {
@@ -58,6 +62,7 @@ export function login(email, password, errorCallback, fullpageApi) {
         fullpageApi.silentMoveTo(1);
       })
       .catch((error) => {
+        dispatch(fetchUserDoc());
         errorCallback(error.message);
       });
   };
@@ -89,4 +94,32 @@ export function logOut(navigate) {
     dispatch({ type: ActionTypes.HIDE_USER });
     auth.signOut();
   };
+}
+
+export function uploadFile(file) {
+  const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
+
+  return uploadBytes(storageRef, file)
+    .then(() => getDownloadURL(storageRef))
+    .then((downloadURL) => {
+      console.log('File uploaded successfully. Download URL:', downloadURL);
+      return downloadURL;
+    })
+    .catch((error) => {
+      console.error('Error uploading file:', error);
+      throw error;
+    });
+}
+
+export async function getAllFiles() {
+  try {
+    const storageRef = ref(storage, `${auth.currentUser.uid}`);
+    const items = await listAll(storageRef);
+    // const fileURLs = items.items.map((item) => item.fullPath);
+    const fileNames = items.items.map((item) => item.name);
+    return fileNames;
+  } catch (error) {
+    console.error('Error fetching files from Firebase Storage:', error);
+    throw error;
+  }
 }

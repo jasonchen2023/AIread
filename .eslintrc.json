@@ -65,7 +65,8 @@
       0,
       "DebuggerStatement"
     ],
-    "no-debugger": "warn"
+    "no-debugger": "warn",
+    "no-unused-vars":0
   },
   "plugins": [
     "react"
