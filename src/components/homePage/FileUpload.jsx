@@ -63,6 +63,7 @@ function FileUpload() {
     const file = e.target.files[0];
     if (file.type !== 'application/pdf') {
       console.error(file.name, 'is not a pdf file.');
+      // eslint-disable-next-line
       alert('Please select a PDF');
     } else {
       setSelectedFile(file);
@@ -73,6 +74,7 @@ function FileUpload() {
     const file = e.dataTransfer.files[0];
     if (file.type !== 'application/pdf') {
       console.error(file.name, 'is not a pdf file.');
+      // eslint-disable-next-line
       alert('Please select a PDF');
     } else {
       setSelectedFile(file);
@@ -105,6 +107,7 @@ function FileUpload() {
   const processFile = () => {
     const file = selectedFile;
     if (file === null) {
+      // eslint-disable-next-line
       alert('No File Selected');
     } else {
       uploadFile(file)

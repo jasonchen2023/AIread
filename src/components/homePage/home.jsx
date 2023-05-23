@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { fetchUserDoc, logOut } from '../../firebase';
@@ -9,7 +9,6 @@ import FileList from './FileList';
 
 export default function Home(props) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useSelector((state) => state.user.displayName);
 
   const makeAPICall = () => {
@@ -19,7 +18,6 @@ export default function Home(props) {
   };
 
   useEffect(() => {
-    navigate('/');
     dispatch(fetchUserDoc());
     makeAPICall();
   }, []);
@@ -36,7 +34,7 @@ export default function Home(props) {
       <NavLink to="/reading/1">Econ Reading</NavLink>
       <NavLink to="/reading/2">Math Reading</NavLink>
       <NavLink to="/reading/3">History Reading</NavLink>
-      <button type="button" onClick={() => dispatch(logOut(navigate))}>Logout</button>
+      <button type="button" onClick={() => dispatch(logOut())}>Logout</button>
     </div>
   );
 }
