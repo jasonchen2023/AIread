@@ -1,4 +1,4 @@
-// adapted from https://codepen.io/codemzy/pen/YzELgbb and https://codepen.io/aquilesb/pen/LKLqZW
+// adapted from https://codepen.io/codemzy/pen/YzELgbb, https://codepen.io/aquilesb/pen/LKLqZW , and chatGPT
 
 import React, { useRef, useState } from 'react';
 import './FileUpload.scss';
@@ -11,6 +11,7 @@ function FileUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const inputRef = useRef(null);
+  const user = useSelector((state) => state.user.displayName);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -22,8 +23,8 @@ function FileUpload() {
     }
   };
 
-  // NOTE: contains some logic for file display. Move to appropriate component
-  const handleFile = async (file) => {
+  // NOTE: code for pdf display. Move to appropriate component
+  const viewFile = async (file) => {
     const fileReader = new FileReader();
 
     fileReader.onload = async (result) => {
@@ -58,16 +59,7 @@ function FileUpload() {
     fileReader.readAsArrayBuffer(file);
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleChange = (e) => {
+  const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (file.type !== 'application/pdf') {
       console.error(file.name, 'is not a pdf file.');
@@ -75,6 +67,27 @@ function FileUpload() {
     } else {
       setSelectedFile(file);
     }
+  };
+
+  const handleDropFile = (e) => {
+    const file = e.dataTransfer.files[0];
+    if (file.type !== 'application/pdf') {
+      console.error(file.name, 'is not a pdf file.');
+      alert('Please select a PDF');
+    } else {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    // if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    //   viewFile(e.dataTransfer.files[0]);
+    // }
+    console.log(e);
+    handleDropFile(e);
   };
 
   const onButtonClick = () => {
@@ -108,7 +121,7 @@ function FileUpload() {
   return (
     <div>
       <form id="form-file-upload" onDragEnter={handleDrag} onSubmit={(e) => e.preventDefault()}>
-        <input ref={inputRef} type="file" id="input-file-upload" webkitdirectory onChange={handleChange} />
+        <input ref={inputRef} type="file" id="input-file-upload" webkitdirectory onChange={handleFileSelect} />
         {/* eslint-disable-next-line */}
         <label id="label-file-upload" htmlFor="input-file-upload" className={dragActive ? 'drag-active' : ''}>
           <div>

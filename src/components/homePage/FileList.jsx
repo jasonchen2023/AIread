@@ -1,10 +1,12 @@
-// chatgpt
+// Credit: Written with help of ChatGPT
 
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllFiles } from '../../firebase';
 
 function FileList() {
   const [fileURLs, setFileURLs] = useState([]);
+  const user = useSelector((state) => state.user.email);
 
   async function fetchFiles() {
     try {
@@ -17,6 +19,7 @@ function FileList() {
 
   useEffect(() => {
     fetchFiles();
+    console.log(user);
   }, []);
 
   return (

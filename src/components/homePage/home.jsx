@@ -10,7 +10,7 @@ import FileList from './FileList';
 export default function Home(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.displayName);
+  const user = useSelector((state) => state.user.displayName);
 
   const makeAPICall = () => {
     axios.get(`${Constants.BASE_URL}/gpt`).then((result) => {
@@ -26,7 +26,7 @@ export default function Home(props) {
 
   return (
     <div>
-      Welcome Home
+      Welcome Home {user}
 
       <FileUpload />
 

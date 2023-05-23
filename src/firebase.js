@@ -62,6 +62,7 @@ export function login(email, password, errorCallback, navigate) {
         navigate('/');
       })
       .catch((error) => {
+        dispatch(fetchUserDoc());
         errorCallback(error.message);
       });
   };
@@ -96,7 +97,7 @@ export function logOut(navigate) {
 }
 
 export function uploadFile(file) {
-  const storageRef = ref(storage, file.name);
+  const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
 
   return uploadBytes(storageRef, file)
     .then(() => getDownloadURL(storageRef))
@@ -112,10 +113,11 @@ export function uploadFile(file) {
 
 export async function getAllFiles() {
   try {
-    const storageRef = ref(storage);
+    const storageRef = ref(storage, `${auth.currentUser.uid}`);
     const items = await listAll(storageRef);
-    const fileURLs = items.items.map((item) => item.fullPath);
-    return fileURLs;
+    // const fileURLs = items.items.map((item) => item.fullPath);
+    const fileNames = items.items.map((item) => item.name);
+    return fileNames;
   } catch (error) {
     console.error('Error fetching files from Firebase Storage:', error);
     throw error;
