@@ -1,39 +1,40 @@
-// Credit: Written with help of ChatGPT
-
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllFiles } from '../../firebase';
+import { selectFile } from '../../actions';
 
 function FileList() {
-  const [fileURLs, setFileURLs] = useState([]);
-  const user = useSelector((state) => state.user.email);
+  const allFiles = useSelector((state) => state.files.allFiles);
 
-  async function fetchFiles() {
-    try {
-      const files = await getAllFiles();
-      setFileURLs(files);
-    } catch (error) {
-      console.error('Error fetching files:', error);
-    }
-  }
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchFiles();
-    console.log(user);
-  }, []);
+    dispatch(getAllFiles());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log(allFiles);
+  }, [allFiles]);
 
   return (
     <div className="file-list">
       <h2>File List</h2>
       <ul>
-        {fileURLs.map((fileURL, index) => (
-          // eslint-disable-next-line
-          <li key={index}>
-            <a href={fileURL} target="_blank" rel="noopener noreferrer">
-              {fileURL}
-            </a>
-          </li>
-        ))}
+        {Object.keys(allFiles).map((fileId) => {
+          const file = allFiles[fileId];
+          return (
+            <li key={fileId}>
+              <NavLink
+                to={`/reading/${fileId}`} // Use fileId directly as the token value
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {file.name}
+              </NavLink>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
