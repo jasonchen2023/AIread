@@ -15,25 +15,25 @@ function FileList() {
   const { id } = useParams();
 
   // not sure why I need to call getAllFiles again. State of allFiles should persist, but seems to be empty object upon load
-  useEffect(() => {
-    dispatch(getAllFiles());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getAllFiles());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    console.log(allFiles);
-    const file = allFiles[id];
-    if (Object.keys(allFiles).length > 0) {
-      setFileName(file.name);
-      setFileUrl(file.url);
-    }
-  }, [allFiles]);
+  // useEffect(() => {
+  //   console.log(allFiles);
+  //   const file = allFiles[id];
+  //   if (Object.keys(allFiles).length > 0) {
+  //     setFileName(file.name);
+  //     setFileUrl(file.url);
+  //   }
+  // }, [allFiles]);
 
   return (
     <div>
-      Current Reading: {fileName}
+      {/* Current Reading: {fileName}
       <br />
       File URL: {fileUrl}
-      <PDFViewer url={fileUrl} />
+      <PDFViewer url={fileUrl} /> */}
     </div>
   );
 }

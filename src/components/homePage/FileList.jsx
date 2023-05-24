@@ -11,7 +11,7 @@ function FileList() {
 
   useEffect(() => {
     dispatch(getAllFiles());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     console.log(allFiles);
@@ -27,6 +27,7 @@ function FileList() {
             <li key={fileId}>
               <NavLink
                 to={`/reading/${fileId}`} // Use fileId directly as the token value
+                // to="/hello" // Use fileId directly as the token value
                 target="_blank"
                 rel="noopener noreferrer"
               >
