@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllFiles } from '../firebase';
 import { selectFile } from '../actions';
+import PDFViewer from './pdfViewer';
 
 function FileList() {
   const allFiles = useSelector((state) => state.files.allFiles); // key: id, value: {name: , url: }
   const [fileName, setFileName] = useState('');
   const [fileUrl, setFileUrl] = useState('');
+  const [uploadedPages, setUploadedPages] = useState([]);
 
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -31,6 +33,7 @@ function FileList() {
       Current Reading: {fileName}
       <br />
       File URL: {fileUrl}
+      <PDFViewer url={fileUrl} />
     </div>
   );
 }

@@ -143,22 +143,3 @@ export function getAllFiles() {
     }
   };
 }
-
-// export async function getAllFiles() {
-//   try {
-//     const storageRef = ref(storage, `${auth.currentUser.uid}`);
-//     const items = await listAll(storageRef);
-
-//     const files = await Promise.all(
-//       items.items.map(async (item) => {
-//         const fileURL = await getDownloadURL(item);
-//         return { name: item.name, url: fileURL };
-//       }),
-//     );
-
-//     return files;
-//   } catch (error) {
-//     console.error('Error fetching files from Firebase Storage:', error);
-//     throw error;
-//   }
-// }
