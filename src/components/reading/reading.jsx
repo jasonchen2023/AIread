@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useParams } from 'react-router';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { ChakraProvider, Flex, Text, Box, Container } from '@chakra-ui/react';
 
 import './reading.module.scss';
 
-export default function Reading(props) {
+function Reading(props) {
   const { id } = useParams();
 
   const testData = [
@@ -33,32 +33,49 @@ export default function Reading(props) {
 
   return (
     <div className="reading-window">
+      <Box minHeight="100vh" display="flex" flexDir="column">
+        <Container maxW="7xl" flex={1}>
 
-      <Container fluid>
-        <Row>
-          <Col>
-            <Card className="testCard">
-              <Card.Body>
-                <Card.Title>Card 1</Card.Title>
-                <Card.Text>
-                  Text content for Card 1
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col>
-            <Card>
-              <Card.Body>
-                <Card.Title>Card 2</Card.Title>
-                <Card.Text>
-                  Text content for Card 2
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+          <Flex
+            wrap="wrap"
+            justifyContent="center"
+            alignItems="center"
+            columnGap={2}
+            mb={2}
+          >
+            <Box flex="1" bg="blue.200" p={2}>
+              <Text>Text Field 1</Text>
+            </Box>
+            <Box flex="1" bg="green.200" p={2}>
+              <Text>Text Field 2</Text>
+            </Box>
+          </Flex>
 
+          <Flex
+            wrap="wrap"
+            justifyContent="center"
+            alignItems="center"
+            columnGap={2}
+            mb={2}
+          >
+            <Box flex="1" bg="blue.200" p={2}>
+              <Text>Text Field 1</Text>
+            </Box>
+            <Box flex="1" bg="green.200" p={2}>
+              <Text>Text Field 2</Text>
+            </Box>
+          </Flex>
+
+        </Container>
+      </Box>
     </div>
+  );
+}
+
+export default function ReadingWindow() {
+  return (
+    <ChakraProvider>
+      <Reading />
+    </ChakraProvider>
   );
 }
