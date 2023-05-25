@@ -100,7 +100,10 @@ export function uploadFile(file) {
   const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
 
   return uploadBytes(storageRef, file)
-    .then(() => getDownloadURL(storageRef))
+    .then(() => {
+      console.log('Waiting for download URL');
+      return getDownloadURL(storageRef); // Return the promise here
+    })
     .then((downloadURL) => {
       console.log('File uploaded successfully. Download URL:', downloadURL);
       return downloadURL;
@@ -111,15 +114,32 @@ export function uploadFile(file) {
     });
 }
 
-export async function getAllFiles() {
-  try {
-    const storageRef = ref(storage, `${auth.currentUser.uid}`);
-    const items = await listAll(storageRef);
-    // const fileURLs = items.items.map((item) => item.fullPath);
-    const fileNames = items.items.map((item) => item.name);
-    return fileNames;
-  } catch (error) {
-    console.error('Error fetching files from Firebase Storage:', error);
-    throw error;
-  }
+// written with help of ChatGPT
+export function getAllFiles() {
+  return async (dispatch) => {
+    try {
+      const storageRef = ref(storage, `${auth.currentUser.uid}`);
+      const items = await listAll(storageRef);
+
+      const files = await Promise.all(
+        items.items.map(async (item) => {
+          const fileURL = await getDownloadURL(item);
+          const url = new URL(fileURL);
+          const searchParams = new URLSearchParams(url.search);
+          const fileId = searchParams.get('token');
+          return { name: item.name, url: fileURL, id: fileId };
+        }),
+      );
+
+      const filesMap = {};
+      files.forEach((file) => {
+        filesMap[file.id] = { name: file.name, url: file.url };
+      });
+
+      dispatch({ type: ActionTypes.FETCH_FILES, payload: { files: filesMap } });
+    } catch (error) {
+      console.error('Error fetching files from Firebase Storage:', error);
+      throw error;
+    }
+  };
 }

@@ -1,0 +1,29 @@
+@use '../../utils/colors' as c;
+
+#homeContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: c.$aiLightBlue;
+}
+
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: red;
+}
+
+#welcome {
+  font-size: 36px;
+}
+
+#fileUpload {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#fileList {
+  margin-left: 20px;
+  margin-right: 20px;
+}
