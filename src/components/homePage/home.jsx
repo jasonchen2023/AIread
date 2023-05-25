@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { fetchUserDoc, logOut } from '../../firebase';
+import { fetchUserDoc, logOut, auth } from '../../firebase';
 import * as Constants from '../../utils/constants';
 import FileUpload from './FileUpload';
 import FileList from './FileList';
@@ -12,8 +12,9 @@ export default function Home(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.displayName);
 
-  const makeAPICall = () => {
-    axios.get(`${Constants.BASE_URL}/gpt`).then((result) => {
+  const makeAPICall = async () => {
+    const token = await auth.currentUser.getIdToken();
+    axios.get(`${Constants.BASE_URL}/gpt`, { headers: { Authorization: token } }).then((result) => {
       console.log(result.data.response);
     });
   };
