@@ -26,9 +26,7 @@ function FileList() {
           return (
             <li key={fileId}>
               <NavLink
-                to={`/reading/${fileId}`} // Use fileId directly as the token value
-                // to="/hello" // Use fileId directly as the token value
-                target="_blank"
+                to={`/reading/${fileId}`}
                 rel="noopener noreferrer"
               >
                 {file.name}
