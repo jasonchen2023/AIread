@@ -1,7 +1,7 @@
 // adapted from https://codepen.io/codemzy/pen/YzELgbb, https://codepen.io/aquilesb/pen/LKLqZW , and chatGPT
 
 import React, { useRef, useState } from 'react';
-// import './FileUpload.scss';
+import './FileUpload.scss';
 import { useSelector } from 'react-redux';
 import { uploadFile } from '../../firebase';
 
