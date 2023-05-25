@@ -2,6 +2,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { ChakraProvider, Flex, Text, Box, Container } from '@chakra-ui/react';
+import ReadingEntry from './ReadingEntry';
 
 import './reading.module.scss';
 
@@ -31,40 +32,16 @@ function Reading(props) {
     ],
   ];
 
+  const chunks = testData.map((entry, index) => (
+    <ReadingEntry left={entry[0]} right={entry[1]} />
+  ));
+
   return (
     <div className="reading-window">
       <Box minHeight="100vh" display="flex" flexDir="column">
         <Container maxW="7xl" flex={1}>
 
-          <Flex
-            wrap="wrap"
-            justifyContent="center"
-            alignItems="center"
-            columnGap={2}
-            mb={2}
-          >
-            <Box flex="1" bg="blue.200" p={2}>
-              <Text>Text Field 1</Text>
-            </Box>
-            <Box flex="1" bg="green.200" p={2}>
-              <Text>Text Field 2</Text>
-            </Box>
-          </Flex>
-
-          <Flex
-            wrap="wrap"
-            justifyContent="center"
-            alignItems="center"
-            columnGap={2}
-            mb={2}
-          >
-            <Box flex="1" bg="blue.200" p={2}>
-              <Text>Text Field 1</Text>
-            </Box>
-            <Box flex="1" bg="green.200" p={2}>
-              <Text>Text Field 2</Text>
-            </Box>
-          </Flex>
+          {chunks}
 
         </Container>
       </Box>
