@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import {
-  BrowserRouter, Routes, Route,
-} from 'react-router-dom';
-import Reading from './reading';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Reading from './reading/reading';
 import FallBack from './fallback';
 import Home from './homePage/home';
 import { auth } from '../firebase';
 import Landing from './landing/landing';
 
 export default function App(props) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((user) => {

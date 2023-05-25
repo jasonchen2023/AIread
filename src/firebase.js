@@ -1,13 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import {
-  createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile,
-} from 'firebase/auth';
-import {
-  doc, getDoc, getFirestore, setDoc,
-} from 'firebase/firestore';
-import {
-  getStorage, ref, uploadBytes, getDownloadURL, listAll,
-} from 'firebase/storage';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from 'firebase/storage';
 import { ActionTypes } from './actions';
 
 // Your web app's Firebase configuration
@@ -73,9 +67,7 @@ export function signup(email, password, displayName, age, errorCallback, fullpag
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         fullpageApi.silentMoveTo(1);
-        updateProfile(auth.currentUser, {
-          displayName,
-        }).then(() => {
+        updateProfile(auth.currentUser, { displayName }).then(() => {
           dispatch(createUserDoc(
             email,
             displayName,
