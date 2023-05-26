@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styles from './styles.module.scss';
-import {
-  auth, logOut, setNewPassword, updateUserDoc,
-  uploadProfileImage,
-} from '../../firebase';
+import { auth, logOut, setNewPassword, updateUserDoc,
+  uploadProfileImage } from '../../firebase';
 import Nav from '../nav/nav';
 
 export default function Landing(props) {

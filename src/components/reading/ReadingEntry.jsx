@@ -1,6 +1,10 @@
+/* eslint-disable react/no-children-prop */
+/* eslint-disable new-cap */
 /* eslint-disable camelcase */
 import React from 'react';
 import { Box, Text, Flex, Badge } from '@chakra-ui/react';
+import ReactMarkdown from 'react-markdown';
+import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 
 function giveSummaryStatus(props) {
   let colorScheme = '';
@@ -46,7 +50,7 @@ function ReadingEntry(props) {
         p={2}
         minH="100%"
       >
-        <Text whiteSpace="pre-wrap">{props.content}</Text>
+        <Text whiteSpace="pre-wrap"><ReactMarkdown components={ChakraUIRenderer()} children={props.content} skipHtml /></Text>
       </Box>
       <Box
         flex="1"
@@ -56,7 +60,7 @@ function ReadingEntry(props) {
         position="relative"
         borderRadius="l"
       >
-        <Text whiteSpace="pre-wrap">{props.summary}</Text>
+        <Text whiteSpace="pre-wrap"><ReactMarkdown components={ChakraUIRenderer()} children={props.summary} skipHtml /></Text>
         {giveSummaryStatus(props)}
       </Box>
 
