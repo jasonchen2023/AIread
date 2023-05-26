@@ -3,10 +3,12 @@ import {
   createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile,
 } from 'firebase/auth';
 import {
-  doc, getDoc, getFirestore, setDoc,
+  addDoc,
+  collection,
+  doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot,
 } from 'firebase/firestore';
 import {
-  getStorage, ref, uploadBytes, getDownloadURL, listAll,
+  getStorage, ref, uploadBytes, getDownloadURL,
 } from 'firebase/storage';
 import { ActionTypes } from './actions';
 
@@ -99,14 +101,16 @@ export function logOut(navigate) {
 export function uploadFile(file) {
   const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
 
-  return uploadBytes(storageRef, file)
+  uploadBytes(storageRef, file)
     .then(() => {
-      console.log('Waiting for download URL');
-      return getDownloadURL(storageRef); // Return the promise here
-    })
-    .then((downloadURL) => {
-      console.log('File uploaded successfully. Download URL:', downloadURL);
-      return downloadURL;
+      getDownloadURL(storageRef).then((url) => {
+        console.log(`adding reading doc in firestore (url: ${url})`);
+        addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
+          title: file.name,
+          url,
+          summaries: {},
+        });
+      });
     })
     .catch((error) => {
       console.error('Error uploading file:', error);
@@ -114,32 +118,35 @@ export function uploadFile(file) {
     });
 }
 
-// written with help of ChatGPT
+// gets all files and listens for changes
 export function getAllFiles() {
   return async (dispatch) => {
     try {
-      const storageRef = ref(storage, `${auth.currentUser.uid}`);
-      const items = await listAll(storageRef);
-
-      const files = await Promise.all(
-        items.items.map(async (item) => {
-          const fileURL = await getDownloadURL(item);
-          const url = new URL(fileURL);
-          const searchParams = new URLSearchParams(url.search);
-          const fileId = searchParams.get('token');
-          return { name: item.name, url: fileURL, id: fileId };
-        }),
-      );
-
-      const filesMap = {};
-      files.forEach((file) => {
-        filesMap[file.id] = { name: file.name, url: file.url };
+      const q = query(collection(db, `Users/${auth.currentUser.uid}/readings`));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const files = [];
+        querySnapshot.forEach((el) => {
+          files.push({
+            id: el.id,
+            title: el.data().title,
+          });
+        });
+        dispatch({ type: ActionTypes.FETCH_FILES, payload: { files } });
       });
-
-      dispatch({ type: ActionTypes.FETCH_FILES, payload: { files: filesMap } });
     } catch (error) {
-      console.error('Error fetching files from Firebase Storage:', error);
-      throw error;
+      console.error('Error fetching files from Firestore:', error);
     }
+  };
+}
+
+// gets file by id
+export function getFile(id) {
+  return (dispatch) => {
+    getDoc(doc(db, `Users/${auth.currentUser.uid}/readings`, id)).then((docSnap) => {
+      dispatch({
+        type: ActionTypes.SELECT_FILE,
+        payload: { ...docSnap.data(), id: docSnap.id },
+      });
+    });
   };
 }

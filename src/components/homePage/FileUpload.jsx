@@ -75,15 +75,7 @@ function FileUpload() {
       // eslint-disable-next-line
       alert('No File Selected');
     } else {
-      uploadFile(file)
-        .then((downloadURL) => {
-          console.log('Download URL:', downloadURL);
-          dispatch(getAllFiles());
-          // Handle the download URL (save it to state, send it to the server, etc.)
-        })
-        .catch((error) => {
-          console.error('Error uploading file:', error);
-        });
+      uploadFile(file);
     }
   };
 
