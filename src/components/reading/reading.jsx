@@ -1,11 +1,45 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
-import { ChakraProvider, Flex, Button, Box, Container, Divider } from '@chakra-ui/react';
+import { ChakraProvider, Flex, Button, Box, Container, Divider, Text, Heading } from '@chakra-ui/react';
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
 
 import './reading.module.scss';
+
+function ReadingHeader(props) {
+  return (
+    <Flex
+      wrap="wrap"
+      justifyContent="center"
+      alignItems="stretch"
+      columnGap={1}
+      mt={4}
+    >
+      <Box
+        flex="1"
+        // bg="blue.200"
+        p={2}
+        minH="100%"
+      >
+        <Heading size="m">Your Document</Heading>
+      </Box>
+      <Flex
+        justifyContent="space-around"
+        alignItems="center"
+        // bg="gray.50"
+        p={2}
+        minH="100%"
+        position="relative"
+        borderRadius="l"
+      >
+        <Heading size="m">AI Summary</Heading>
+        <Button size="sm" colorScheme="blue" onClick={() => {}}>{props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
+      </Flex>
+      <Divider />
+    </Flex>
+  );
+}
 
 function Reading(props) {
   const { id } = useParams();
@@ -44,9 +78,7 @@ function Reading(props) {
       <Box minHeight="100vh" display="flex" flexDir="column">
         <Container maxWidth="none" flex={1}>
 
-          <Flex justify="center" mt={4} mb={4}>
-            <Button colorScheme="blue" onClick={() => {}}>{summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
-          </Flex>
+          <ReadingHeader summaryExists />
 
           {chunks}
 
