@@ -153,6 +153,21 @@ export function uploadFile(file) {
     });
 }
 
+export function uploadProfileImage(file, successCallback, failureCallback) {
+  const storageRef = ref(getStorage(), `profilePics/${auth.currentUser.uid}`);
+  uploadBytes(storageRef, file)
+    .then(() => {
+      getDownloadURL(storageRef).then((url) => {
+        updateProfile(auth.currentUser, { photoURL: url });
+        successCallback(url);
+      });
+    })
+    .catch((error) => {
+      console.error('Error uploading file:', error);
+      failureCallback();
+    });
+}
+
 // gets all files and listens for changes
 export function getAllFiles() {
   return async (dispatch) => {
