@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import {
-  createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile,
+  createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword,
 } from 'firebase/auth';
 import {
   addDoc,
@@ -40,8 +40,26 @@ export function createUserDoc(email, displayName, age) {
       .then(() => {
         dispatch({
           type: ActionTypes.SET_USER,
-          payload: { email, displayName, age },
+          payload: {
+            email, displayName, age, fieldOfInterest: '',
+          },
         });
+      });
+  };
+}
+
+export function updateUserDoc(fields) {
+  return (dispatch) => {
+    setDoc(
+      doc(db, 'Users', auth.currentUser.uid),
+      fields,
+      { merge: true },
+    )
+      .then(() => {
+        dispatch({ type: ActionTypes.UPDATE_PROFILE, payload: fields });
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
   };
 }
@@ -57,20 +75,19 @@ export function fetchUserDoc() {
   };
 }
 
-export function login(email, password, errorCallback, fullpageApi) {
+export function login(email, password, failureToast, fullpageApi) {
   return (dispatch) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         fullpageApi.silentMoveTo(1);
       })
       .catch((error) => {
-        dispatch(fetchUserDoc());
-        errorCallback(error.message);
+        failureToast(error.message);
       });
   };
 }
 
-export function signup(email, password, displayName, age, errorCallback, fullpageApi) {
+export function signup(email, password, displayName, age, failureToast, fullpageApi) {
   return (dispatch) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -86,15 +103,33 @@ export function signup(email, password, displayName, age, errorCallback, fullpag
         });
       })
       .catch((error) => {
-        errorCallback(error.message);
+        failureToast(error.message);
       });
   };
+}
+
+export function setNewPassword(newPassword, setResetPassword, successToast, failureToast) {
+  if (newPassword === '' || newPassword.indexOf(' ') >= 0) {
+    failureToast();
+    return;
+  }
+  updatePassword(auth.currentUser, newPassword)
+    .then(() => {
+      console.log('HERE');
+      setResetPassword('');
+      successToast();
+    })
+    .catch((error) => {
+      console.log(error);
+      failureToast();
+    });
 }
 
 export function logOut(navigate) {
   return (dispatch) => {
     dispatch({ type: ActionTypes.HIDE_USER });
     auth.signOut();
+    navigate('/');
   };
 }
 

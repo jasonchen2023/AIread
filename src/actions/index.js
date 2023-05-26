@@ -6,6 +6,7 @@ export const ActionTypes = {
   HIDE_USER: 'HIDE_USER',
   FETCH_FILES: 'FETCH_FILES',
   SELECT_FILE: 'SELECT_FILE',
+  UPDATE_PROFILE: 'UPDATE_PROFILE',
 };
 
 export function increment() {
