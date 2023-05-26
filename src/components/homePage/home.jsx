@@ -9,6 +9,7 @@ import * as Constants from '../../utils/constants';
 import FileUpload from './FileUpload';
 import FileList from './FileList';
 import styles from './styles.module.scss';
+import Nav from '../nav/nav';
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -21,10 +22,7 @@ export default function Home(props) {
 
   return (
     <div id={styles.homeContainer}>
-      <div id={styles.header}>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/profile">Profile</NavLink>
-      </div>
+      <Nav />
       <div id={styles.welcome}>
         Welcome Home {user}
       </div>

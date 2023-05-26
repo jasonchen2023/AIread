@@ -18,7 +18,7 @@
 
   .logoutButton {
     align-self: center;
-    height: 50px;
+    min-height: 50px;
   }
 
   .resetPasswordButton {
@@ -29,13 +29,6 @@
     cursor: pointer;
     filter: brightness(85%);
   }
-}
-
-#header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: red;
 }
 
 .infoRow {
