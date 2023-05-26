@@ -22,8 +22,8 @@ export default function Home(props) {
   return (
     <div id={styles.homeContainer}>
       <div id={styles.header}>
-        <div>AIread</div>
-        <div>Profile</div>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/profile">Profile</NavLink>
       </div>
       <div id={styles.welcome}>
         Welcome Home {user}
@@ -40,7 +40,6 @@ export default function Home(props) {
       <NavLink to="/reading/1">Econ Reading</NavLink>
       <NavLink to="/reading/2">Math Reading</NavLink>
       <NavLink to="/reading/3">History Reading</NavLink>
-      <button type="button" onClick={() => dispatch(logOut())}>Logout</button>
     </div>
   );
 }
