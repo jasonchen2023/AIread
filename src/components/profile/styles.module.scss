@@ -7,6 +7,30 @@
   gap: 10px;
   background-color: c.$aiComponentBlue;
 
+  #profileContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    min-width: 200px;
+    min-height: 200px;
+    background-color: gray;
+    border-radius: 50%;
+    align-self: center;
+    overflow: hidden;
+    margin-block: 50px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    img {
+      width: inherit;
+      height: inherit;
+    }
+  }
+
   button {
     width: 100px;
     background-color: c.$aiOrange;
