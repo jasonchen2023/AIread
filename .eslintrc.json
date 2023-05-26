@@ -4,6 +4,9 @@
       "browser": true,
       "es6": true
   },
+  "parserOptions": {
+	"ecmaVersion": 2020
+},
   "rules": {
       "strict": 0,
       "quotes": [2, "single"],

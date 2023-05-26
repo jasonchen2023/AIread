@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Reading from './reading/reading';
 import FallBack from './fallback';
 import Home from './homePage/home';
 import { auth } from '../firebase';
 import Landing from './landing/landing';
+import Profile from './profile/profile';
 
 export default function App(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,17 +26,26 @@ export default function App(props) {
   }, []);
 
   if (!isAuthenticated) {
-    return <Landing />;
+    return (
+      <>
+        <Landing />
+        <ToastContainer position="top-center" />
+      </>
+    );
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/reading/:id" element={<Reading />} />
-        <Route path="*" element={<FallBack />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/reading/:id" element={<Reading />} />
+          <Route path="*" element={<FallBack />} />
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer position="top-center" />
+    </>
+
   );
 }
