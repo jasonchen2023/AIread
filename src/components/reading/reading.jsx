@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
-import { ChakraProvider, Flex, Button, Box, Container } from '@chakra-ui/react';
+import { ChakraProvider, Flex, Button, Box, Container, Divider } from '@chakra-ui/react';
 import ReadingEntry from './ReadingEntry';
 
 import './reading.module.scss';
@@ -33,14 +33,19 @@ function Reading(props) {
     ],
   ];
 
+  const testTrue = true;
   const chunks = testData.map((entry, index) => (
-    <ReadingEntry left={entry[0]} right={entry[1]} />
+    <div>
+      <ReadingEntry content={entry[0]} summary={entry[1]} summary_upToDate={testTrue} />
+      <Divider />
+    </div>
+    // <ReadingEntry content={entry["content"]} summary={entry["summary"]} summary_upToDate={entry["summary_upToDate"]} />
   ));
 
   return (
     <div className="reading-window">
       <Box minHeight="100vh" display="flex" flexDir="column">
-        <Container maxW="9xl" flex={1}>
+        <Container maxWidth="none" flex={1}>
 
           <Flex justify="center" mt={4} mb={4}>
             <Button colorScheme="blue" onClick={() => {}}>{summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
