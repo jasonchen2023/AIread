@@ -1,13 +1,14 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router';
-import { ChakraProvider, Flex, Text, Box, Container } from '@chakra-ui/react';
+import { ChakraProvider, Flex, Button, Box, Container } from '@chakra-ui/react';
 import ReadingEntry from './ReadingEntry';
 
 import './reading.module.scss';
 
 function Reading(props) {
   const { id } = useParams();
+  const [summaryExists, setSummaryExists] = useState(true);
 
   const testData = [
     [
@@ -39,7 +40,11 @@ function Reading(props) {
   return (
     <div className="reading-window">
       <Box minHeight="100vh" display="flex" flexDir="column">
-        <Container maxW="7xl" flex={1}>
+        <Container maxW="9xl" flex={1}>
+
+          <Flex justify="center" mt={4} mb={4}>
+            <Button colorScheme="blue" onClick={() => {}}>{summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
+          </Flex>
 
           {chunks}
 
