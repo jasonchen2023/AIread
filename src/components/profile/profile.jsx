@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 import {
   auth, logOut, setNewPassword, updateUserDoc,
 } from '../../firebase';
+import Nav from '../nav/nav';
 
 export default function Landing(props) {
   const dispatch = useDispatch();
@@ -30,10 +31,7 @@ export default function Landing(props) {
 
   return (
     <div id={styles.page}>
-      <div id={styles.header}>
-        <NavLink to="/">AIread</NavLink>
-        <NavLink to="/profile">Profile</NavLink>
-      </div>
+      <Nav />
       <div id={styles.profileContainer} />
       <div className={styles.infoRow}>
         <p>Email</p>
