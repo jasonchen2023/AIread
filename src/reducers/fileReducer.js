@@ -1,12 +1,11 @@
 import { ActionTypes } from '../actions';
 
 const initialState = {
-  allFiles: {},
+  allFiles: [],
   selectedFile: {},
 };
 
 const FileReducer = (state = initialState, action = {}) => {
-  console.log('Action', action);
   switch (action.type) {
     case ActionTypes.FETCH_FILES:
       return {

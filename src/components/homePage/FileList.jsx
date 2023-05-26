@@ -7,29 +7,18 @@ import { selectFile } from '../../actions';
 function FileList() {
   const allFiles = useSelector((state) => state.files.allFiles);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getAllFiles());
-  }, []);
-
-  useEffect(() => {
-    console.log(allFiles);
-  }, [allFiles]);
-
   return (
     <div className="file-list">
       <h2>File List</h2>
       <ul>
-        {Object.keys(allFiles).map((fileId) => {
-          const file = allFiles[fileId];
+        {allFiles.map((el) => {
           return (
-            <li key={fileId}>
+            <li key={el.id}>
               <NavLink
-                to={`/reading/${fileId}`}
+                to={`/reading/${el.id}`}
                 rel="noopener noreferrer"
               >
-                {file.name}
+                {el.title}
               </NavLink>
             </li>
           );
