@@ -19,24 +19,25 @@ function FileList() {
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
 
   function extractText(pdfUrl) {
-  // eslint-disable-next-line
-  const pdf = pdfjsLib.getDocument(pdfUrl);
     // eslint-disable-next-line
-  return pdf.promise.then((pdf) => {
+    const pdf = pdfjsLib.getDocument(pdfUrl);
+    // eslint-disable-next-line
+    return pdf.promise.then((pdf) => {
       const totalPageCount = pdf.numPages;
       const countPromises = [];
       for (
         let currentPage = 1;
         currentPage <= totalPageCount;
-      // eslint-disable-next-line
-      currentPage++
+        // eslint-disable-next-line
+        currentPage++
       ) {
         const page = pdf.getPage(currentPage);
         countPromises.push(
-        // eslint-disable-next-line
+          // eslint-disable-next-line
         page.then((page) => {
             const textContent = page.getTextContent();
             return textContent.then((text) => {
+              console.log(text.items);
               return text.items
                 .map((s) => {
                   return s.str;

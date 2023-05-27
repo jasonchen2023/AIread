@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllFiles } from '../../firebase';
 import { selectFile } from '../../actions';
+import './FileList.scss';
 
 function FileList() {
   const allFiles = useSelector((state) => state.files.allFiles);
