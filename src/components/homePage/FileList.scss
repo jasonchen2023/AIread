@@ -8,21 +8,21 @@
 }
 
 .card {
-  /* Add your desired styling for each card */
-  /* Add additional styles as needed */
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
   background-color: white;
 }
 
+.card:hover {
+  filter: brightness(85%);
+}
+
 .card a {
-  /* Add your desired styling for the link */
-  /* Add additional styles as needed */
   text-decoration: none;
   color: #333;
 }
 
 .fileTitle {
-  font-size: 24px;
+  font-size: 16px;
 }

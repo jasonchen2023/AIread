@@ -70,7 +70,7 @@ function FileUpload() {
     });
   };
 
-  const processFile = () => {
+  const processFileUpload = () => {
     const file = selectedFile;
     if (file === null) {
       // eslint-disable-next-line
@@ -80,15 +80,19 @@ function FileUpload() {
     }
   };
 
+  const processFileCancel = () => {
+    setSelectedFile(null);
+  };
+
   return (
-    <div>
+    <div id="fileUploadContainer">
       <form id="form-file-upload" onDragEnter={handleDrag} onSubmit={(e) => e.preventDefault()}>
         <input ref={inputRef} type="file" id="input-file-upload" webkitdirectory onChange={handleFileSelect} />
         {/* eslint-disable-next-line */}
         <label id="label-file-upload" htmlFor="input-file-upload" className={dragActive ? 'drag-active' : ''}>
           <div>
             <p>Drag and drop your file here or</p>
-            <button type="button" className="upload-button" onClick={onButtonClick}>
+            <button type="button" className="select-file-button" onClick={onButtonClick}>
               Select a file
             </button>
           </div>
@@ -96,11 +100,16 @@ function FileUpload() {
         {dragActive && <div id="drag-file-element" onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop} />}
       </form>
       {selectedFile && (
-        <div>
-          Selected File: {selectedFile.name}
+        <div id="selectedFileContainer">
+          <div id="selectedFileDiv">
+            Selected File: <span id="selectedFile">{selectedFile.name}</span>
+          </div>
+          <div id="upload-buttons">
+            <button type="button" id="fileUploadButton" onClick={processFileUpload}>Upload</button>
+            <button type="button" id="cancelButton" onClick={processFileCancel}>Cancel</button>
+          </div>
         </div>
       )}
-      <button type="button" onClick={processFile}>Upload</button>
     </div>
   );
 }

@@ -1,14 +1,23 @@
-body {
-  margin: 0px;
-  font-family: 'Oswald', sans-serif;
-}
+// Adapted from https://codepen.io/codemzy/pen/YzELgbb
 
-.page {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+@use '../../utils/colors' as c;
+
+// body {
+//   margin: 0px;
+//   font-family: 'Oswald', sans-serif;
+// }
+
+// .page {
+//   display: flex;
+//   min-height: 100vh;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+#fileUploadContainer {
+  margin: 40px;
+  margin-bottom: 20px;
 }
 
 #form-file-upload {
@@ -42,7 +51,28 @@ body {
   background-color: #ffffff;
 }
 
-.upload-button {
+#selectedFileContainer {
+  margin: 20px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+#selectedFileDiv {
+  font-size: 15px;
+}
+
+#selectedFile {
+  font-weight: 600;
+}
+
+#uploadButtons {
+  display: flex;
+  justify-content: right;
+  background-color: red;
+}
+
+.select-file-button {
   cursor: pointer;
   padding: 0.25rem;
   font-size: 1rem;
@@ -51,7 +81,40 @@ body {
   background-color: transparent;
 }
 
-.upload-button:hover {
+#fileUploadButton {
+  background-color: c.$aiOrange;
+  border: none;
+  height: 40px;
+  width: 90px;
+  border-radius: 10px;
+  font-size: 16px;
+  margin: 20px;
+  margin-left: 0px;
+}
+
+#fileUploadButton:hover {
+  cursor: pointer;
+  filter: brightness(85%);
+}
+
+
+#cancelButton {
+  background-color: silver;
+  border: none;
+  height: 40px;
+  width: 90px;
+  border-radius: 10px;
+  font-size: 16px;
+  margin: 20px;
+}
+
+#cancelButton:hover{
+  cursor: pointer;
+  filter: brightness(85%);
+}
+
+
+.select-file-button:hover {
   text-decoration-line: underline;
 }
 
