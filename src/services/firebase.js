@@ -155,14 +155,16 @@ export function uploadFile(file) {
         // Convert PDF to text
         try {
           console.log(`converting pdf with title: ${file.name}`);
-          const res = await axios.post('https://selectpdf.com/api2/pdftotext/', {
-            key: import.meta.env.VITE_PDFTOTEXT_API_KEY,
-            url,
-          });
+          const formData = new FormData();
+          formData.append('key', import.meta.env.VITE_PDFTOTEXT_API_KEY);
+          formData.append('url', url);
+          const res = await axios.post('https://selectpdf.com/api2/pdftotext/', formData);
+
           console.log('pdf converted successfully');
 
           // Append the result to the raw_content field in Firebase
           const rawContent = res.data.trim();
+          // console.log(rawContent);
 
           // Add document to Firestore
           await addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
