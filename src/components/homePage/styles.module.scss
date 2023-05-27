@@ -3,7 +3,7 @@
 #homeContainer {
   display: flex;
   flex-direction: column;
-  background-color: c.$aiLightBlue;
+  background-color: c.$aiComponentBlue;
 }
 
 #header {
@@ -15,6 +15,8 @@
 
 #welcome {
   font-size: 36px;
+  margin-top: 10px;
+  margin-left: 40px;
 }
 
 #fileUpload {

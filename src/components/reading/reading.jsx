@@ -2,12 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChakraProvider, Flex, Button, Box, Container, Divider, Text, Heading } from '@chakra-ui/react';
+import { ChakraProvider, Flex, Button, Box, Container, Divider, Heading } from '@chakra-ui/react';
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
 import { getFile, makeSummaries } from '../../services/firebase';
 
-import styles from './styles.module.scss';
 import './reading.module.scss';
 
 function ReadingHeader(props) {
@@ -88,12 +87,12 @@ function Reading(props) {
   ];
   */
 
-  const testData = [
-    [
-      selectedFile.rawContent,
-      '',
-    ],
-  ];
+  // const testData = [
+  //   [
+  //     selectedFile.rawContent,
+  //     '',
+  //   ],
+  // ];
 
   const renderChunks = () => {
     if (isSelectedFileLoaded) {

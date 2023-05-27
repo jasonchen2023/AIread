@@ -2,7 +2,7 @@
 /* eslint-disable new-cap */
 /* eslint-disable camelcase */
 import React from 'react';
-import { Box, Text, Flex, Badge } from '@chakra-ui/react';
+import { Box, Flex, Badge } from '@chakra-ui/react';
 import ReactMarkdown from 'react-markdown';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 

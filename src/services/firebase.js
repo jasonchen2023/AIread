@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword } from 'firebase/auth';
-import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, updateDoc, arrayUnion, deleteDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import axios from 'axios';
 import { ActionTypes } from '../actions';
 import { convertPDFtoText, chunkify } from './processFile';
@@ -22,7 +22,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage();
 export const auth = getAuth(app);
 
 // USER DOCUMENT ACTIONS
@@ -219,6 +218,29 @@ export function getFile(id) {
       console.error('Error fetching files from Firestore:', error);
     }
   };
+}
+
+// deletes document by id and title
+export function deleteFile(id, title) {
+  const docRefToDelete = doc(collection(db, `Users/${auth.currentUser.uid}/readings`), id);
+
+  deleteDoc(docRefToDelete)
+    .then(() => {
+      console.log('Document data deleted successfully from firestore');
+      getAllFiles();
+    })
+    .catch((error) => {
+      console.error('Error deleting document:', error);
+    });
+
+  const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${title}`);
+
+  // Delete the file
+  deleteObject(storageRef).then(() => {
+    console.log('Document deleted successfully from storage');
+  }).catch((error) => {
+    console.error('Error deleting document from storage:', error);
+  });
 }
 
 // OPENAI SUMMARY PROCESSING

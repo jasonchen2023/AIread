@@ -29,13 +29,8 @@ export default function Home(props) {
       </div>
 
       <div id={styles.fileList}>
-        Here is a dashboard of all your readings
         <FileList />
       </div>
-
-      <NavLink to="/reading/1">Econ Reading</NavLink>
-      <NavLink to="/reading/2">Math Reading</NavLink>
-      <NavLink to="/reading/3">History Reading</NavLink>
     </div>
   );
 }
