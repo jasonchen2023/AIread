@@ -57,6 +57,13 @@ function Reading(props) {
     dispatch(getFile(id));
   }, []);
 
+  const [isSelectedFileLoaded, setIsSelectedFileLoaded] = useState(false);
+  useEffect(() => {
+    if (selectedFile) {
+      setIsSelectedFileLoaded(true);
+    }
+  }, [selectedFile]);
+
   /*
   const testData = [
     [
@@ -85,13 +92,22 @@ function Reading(props) {
     ],
   ];
 
-  const chunks = testData.map((entry, index) => (
-    <div>
-      <ReadingEntry content={entry[0]} summary={entry[1]} summary_upToDate={false} />
-      <Divider />
-    </div>
-    // <ReadingEntry content={entry["content"]} summary={entry["summary"]} summary_upToDate={entry["summary_upToDate"]} />
-  ));
+  // <ReadingEntry content={chunk.content} summary={chunk.summary} summary_upToDate={chunk.summary_upToDate} />
+  const renderChunks = () => {
+    if (isSelectedFileLoaded) {
+      console.log(selectedFile.chunks);
+
+      return selectedFile.chunks?.map((chunk, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={index}>
+          <ReadingEntry content={chunk.content} summary="none" summary_upToDate={false} />
+          <Divider />
+        </div>
+      ));
+    } else {
+      return <div>Hello</div>;
+    }
+  };
 
   return (
     <div className="reading-window">
@@ -100,7 +116,7 @@ function Reading(props) {
 
           <ReadingHeader summaryExists />
 
-          {chunks}
+          {renderChunks()}
 
         </Container>
       </Box>

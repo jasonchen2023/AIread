@@ -4,6 +4,7 @@ import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, 
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import axios from 'axios';
 import { ActionTypes } from '../actions';
+import { convertPDFtoText, chunkify } from './processFile';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -149,37 +150,32 @@ export function uploadFile(file) {
   const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
   uploadBytes(storageRef, file)
     .then(() => {
-      getDownloadURL(storageRef).then(async (url) => {
-        console.log(`adding reading doc in firestore (url: ${url})`);
+      getDownloadURL(storageRef)
+        .then(async (url) => {
+          console.log(`adding reading doc in firestore (url: ${url})`);
 
-        // Convert PDF to text
-        try {
-          console.log(`converting pdf with title: ${file.name}`);
-          const formData = new FormData();
-          formData.append('key', import.meta.env.VITE_PDFTOTEXT_API_KEY);
-          formData.append('url', url);
-          const res = await axios.post('https://selectpdf.com/api2/pdftotext/', formData);
+          try {
+            // process PDF to text
+            const rawContent = await convertPDFtoText(url);
+            console.log(rawContent);
 
-          console.log('pdf converted successfully');
+            // process text to chunks
+            const chunks = chunkify(rawContent);
 
-          // Append the result to the raw_content field in Firebase
-          const rawContent = res.data.trim();
-          // console.log(rawContent);
-
-          // Add document to Firestore
-          await addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
-            title: file.name,
-            author: '',
-            topLevelSummary: '',
-            url,
-            rawContent,
-            chunks: [],
-          });
-        } catch (err) {
-          console.log(`error: ${err}`);
-        }
-      });
+            await addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
+              title: file.name,
+              author: '',
+              topLevelSummary: '',
+              url,
+              rawContent,
+              chunks,
+            });
+          } catch (err) {
+            console.log(`error: ${err}`);
+          }
+        });
     })
+
     .catch((error) => {
       console.error('Error uploading file:', error);
       throw error;

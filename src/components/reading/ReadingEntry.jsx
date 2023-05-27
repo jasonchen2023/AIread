@@ -50,7 +50,7 @@ function ReadingEntry(props) {
         p={2}
         minH="100%"
       >
-        <Text whiteSpace="pre-wrap">{props.content}</Text>
+        <ReactMarkdown components={ChakraUIRenderer()} children={props.content} skipHtml />
       </Box>
       <Box
         flex="1"
@@ -60,7 +60,7 @@ function ReadingEntry(props) {
         position="relative"
         borderRadius="l"
       >
-        <Text whiteSpace="pre-wrap"><ReactMarkdown components={ChakraUIRenderer()} children={props.summary} skipHtml /></Text>
+        <ReactMarkdown components={ChakraUIRenderer()} children={props.summary} skipHtml />
         {giveSummaryStatus(props)}
       </Box>
 
