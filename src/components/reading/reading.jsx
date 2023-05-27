@@ -21,7 +21,6 @@ function ReadingHeader(props) {
     <Flex
       wrap="wrap"
       justifyContent="center"
-      alignItems="stretch"
       columnGap={1}
       mt={4}
     >
@@ -34,9 +33,10 @@ function ReadingHeader(props) {
         <Heading size="m">Your Document</Heading>
       </Box>
       <Flex
-        justifyContent="space-around"
+        justifyContent="space-between"
         alignItems="center"
-        // bg="gray.50"
+        width="50%"
+        // bg="orange"
         p={2}
         minH="100%"
         position="relative"
