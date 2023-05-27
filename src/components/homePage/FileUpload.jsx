@@ -77,6 +77,7 @@ function FileUpload() {
       toast('No File Selected');
     } else {
       uploadFile(file);
+      setSelectedFile(null);
     }
   };
 

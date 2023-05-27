@@ -2,19 +2,6 @@
 
 @use '../../utils/colors' as c;
 
-// body {
-//   margin: 0px;
-//   font-family: 'Oswald', sans-serif;
-// }
-
-// .page {
-//   display: flex;
-//   min-height: 100vh;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-// }
-
 #fileUploadContainer {
   margin: 40px;
   margin-bottom: 20px;
@@ -69,7 +56,6 @@
 #uploadButtons {
   display: flex;
   justify-content: right;
-  background-color: red;
 }
 
 .select-file-button {

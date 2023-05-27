@@ -5,10 +5,10 @@ import {
 import {
   addDoc,
   collection,
-  doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot,
+  doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, deleteDoc,
 } from 'firebase/firestore';
 import {
-  getStorage, ref, uploadBytes, getDownloadURL,
+  getStorage, ref, uploadBytes, getDownloadURL, deleteObject,
 } from 'firebase/storage';
 import { ActionTypes } from './actions';
 
@@ -199,4 +199,27 @@ export function getFile(id) {
       });
     });
   };
+}
+
+// deletes document by id and title
+export function deleteFile(id, title) {
+  const docRefToDelete = doc(collection(db, `Users/${auth.currentUser.uid}/readings`), id);
+
+  deleteDoc(docRefToDelete)
+    .then(() => {
+      console.log('Document data deleted successfully from firestore');
+      getAllFiles();
+    })
+    .catch((error) => {
+      console.error('Error deleting document:', error);
+    });
+
+  const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${title}`);
+
+  // Delete the file
+  deleteObject(storageRef).then(() => {
+    console.log('Document deleted successfully from storage');
+  }).catch((error) => {
+    console.error('Error deleting document from storage:', error);
+  });
 }

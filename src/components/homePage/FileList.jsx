@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllFiles } from '../../firebase';
+import { getAllFiles, deleteFile } from '../../firebase';
 import { selectFile } from '../../actions';
+import trash from '../../img/trash.png';
 import './FileList.scss';
 
 function FileList() {
@@ -14,10 +15,13 @@ function FileList() {
       <ul>
         {allFiles.map((el) => {
           return (
-            <div className="card" key={el.id}>
-              <NavLink to={`/reading/${el.id}`} rel="noopener noreferrer">
-                <div className="fileTitle">{el.title}</div>
-              </NavLink>
+            <div className="fileRow">
+              <div className="card" key={el.id}>
+                <NavLink to={`/reading/${el.id}`} rel="noopener noreferrer">
+                  <div className="fileTitle">{el.title}</div>
+                </NavLink>
+              </div>
+              <img className="trash" alt="Delete" src={trash} onClick={() => { deleteFile(el.id, el.title); }} />
             </div>
           );
         })}

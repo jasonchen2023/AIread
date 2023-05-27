@@ -33,10 +33,6 @@ export default function Home(props) {
       <div id={styles.fileList}>
         <FileList />
       </div>
-
-      <NavLink to="/reading/1">Econ Reading</NavLink>
-      <NavLink to="/reading/2">Math Reading</NavLink>
-      <NavLink to="/reading/3">History Reading</NavLink>
     </div>
   );
 }

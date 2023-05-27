@@ -3,6 +3,13 @@
   margin-right: 10px;
 }
 
+.fileRow {
+  display: flex;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
 #readingsHeader {
   margin-left: 40px;
 }
@@ -11,7 +18,10 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
+  width: 95%;
   background-color: white;
+  display: flex;
+  justify-content: space-between;
 }
 
 .card:hover {
@@ -25,4 +35,15 @@
 
 .fileTitle {
   font-size: 16px;
+}
+
+.trash {
+  width: 20px;
+  height: 20px;
+}
+
+.trash:hover {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
 }
