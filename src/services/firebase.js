@@ -5,6 +5,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import axios from 'axios';
 import { ActionTypes } from '../actions';
 import { convertPDFtoText, chunkify } from './processFile';
+import { BASE_URL } from '../utils/constants';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -213,4 +214,26 @@ export function getFile(id) {
       });
     });
   };
+}
+
+// OPENAI SUMMARY PROCESSING
+// =========================================================================================================
+export async function makeSummaries(fileID, chunkList) {
+  const contentArray = chunkList.map((chunk) => chunk.content);
+  console.log(contentArray);
+
+  const res = await axios.post(`${BASE_URL}/summaries`, {
+    summaryType: 'document',
+    content: contentArray,
+  });
+  const summaryArray = res.data.map((chunk) => chunk[1]);
+  console.log(summaryArray);
+
+  // from chatgpt
+  const documentRef = doc(db, `Users/${auth.currentUser.uid}/readings`, fileID);
+  const updatedChunks = chunkList.map((chunk, index) => {
+    // Replace the summary of each chunk with the new summary from newSummaries
+    return { ...chunk, summary: summaryArray[index] };
+  });
+  await updateDoc(documentRef, { chunks: updatedChunks });
 }

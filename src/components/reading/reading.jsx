@@ -5,12 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ChakraProvider, Flex, Button, Box, Container, Divider, Text, Heading } from '@chakra-ui/react';
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
-import { getFile } from '../../services/firebase';
+import { getFile, makeSummaries } from '../../services/firebase';
 
 import styles from './styles.module.scss';
 import './reading.module.scss';
 
 function ReadingHeader(props) {
+  const selectedFile = useSelector((state) => state.files.selectedFile);
+
+  const onGenerateClick = () => {
+    makeSummaries(selectedFile.id, selectedFile.chunks);
+  };
+
   return (
     <Flex
       wrap="wrap"
@@ -37,7 +43,7 @@ function ReadingHeader(props) {
         borderRadius="l"
       >
         <Heading size="m">AI Summary</Heading>
-        <Button size="sm" colorScheme="blue" onClick={() => {}}>{props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
+        <Button size="sm" colorScheme="blue" onClick={onGenerateClick}>{props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
       </Flex>
       <Divider />
     </Flex>
@@ -46,12 +52,9 @@ function ReadingHeader(props) {
 
 function Reading(props) {
   const selectedFile = useSelector((state) => state.files.selectedFile);
-  const [fileText, setFileText] = useState('');
 
   const dispatch = useDispatch();
   const { id } = useParams();
-
-  const [summaryExists, setSummaryExists] = useState(false);
 
   useEffect(() => {
     dispatch(getFile(id));
@@ -92,7 +95,6 @@ function Reading(props) {
     ],
   ];
 
-  // <ReadingEntry content={chunk.content} summary={chunk.summary} summary_upToDate={chunk.summary_upToDate} />
   const renderChunks = () => {
     if (isSelectedFileLoaded) {
       console.log(selectedFile.chunks);
@@ -100,7 +102,7 @@ function Reading(props) {
       return selectedFile.chunks?.map((chunk, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={index}>
-          <ReadingEntry content={chunk.content} summary="none" summary_upToDate={false} />
+          <ReadingEntry content={chunk.content} summary={chunk.summary} summary_upToDate={chunk.summary_upToDate} />
           <Divider />
         </div>
       ));
@@ -114,7 +116,7 @@ function Reading(props) {
       <Box minHeight="100vh" display="flex" flexDir="column">
         <Container maxWidth="none" flex={1}>
 
-          <ReadingHeader summaryExists />
+          <ReadingHeader />
 
           {renderChunks()}
 
