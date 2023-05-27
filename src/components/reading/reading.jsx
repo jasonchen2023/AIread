@@ -88,7 +88,7 @@ function Reading(props) {
   );
 }
 
-export default function ReadingWindow() {
+export default function ReadingWrapper() {
   return (
     <div>
       <Nav />
