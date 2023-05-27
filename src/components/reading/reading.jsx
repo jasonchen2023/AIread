@@ -1,7 +1,11 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { ChakraProvider, Flex, Button, Box, Container, Divider, Text, Heading } from '@chakra-ui/react';
+import styles from './styles.module.scss';
+import { getFile } from '../../firebase';
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
 
@@ -12,7 +16,6 @@ function ReadingHeader(props) {
     <Flex
       wrap="wrap"
       justifyContent="center"
-      alignItems="stretch"
       columnGap={1}
       mt={4}
     >
@@ -25,9 +28,10 @@ function ReadingHeader(props) {
         <Heading size="m">Your Document</Heading>
       </Box>
       <Flex
-        justifyContent="space-around"
+        justifyContent="space-between"
         alignItems="center"
-        // bg="gray.50"
+        width="50%"
+        // bg="orange"
         p={2}
         minH="100%"
         position="relative"
@@ -42,7 +46,37 @@ function ReadingHeader(props) {
 }
 
 function Reading(props) {
+  const selectedFile = useSelector((state) => state.files.selectedFile);
+  const [fileText, setFileText] = useState('');
+
+  const convertPdfToText = async () => {
+    try {
+      console.log(`converting pdf with title: ${selectedFile.title}`);
+      const res = await axios.postForm('https://selectpdf.com/api2/pdftotext/', {
+        key: import.meta.env.VITE_PDFTOTEXT_API_KEY,
+        url: selectedFile.url,
+      });
+      setFileText(res.data.trim());
+    } catch (err) {
+      console.log(`error: ${err}`);
+    }
+  };
+
+  const dispatch = useDispatch();
   const { id } = useParams();
+
+  useEffect(() => {
+    dispatch(getFile(id));
+  }, []);
+
+  useEffect(() => {
+    if (selectedFile.url && selectedFile.id === id) {
+      convertPdfToText();
+    }
+  }, [selectedFile.url]);
+
+  console.log(selectedFile.title);
+
   const [summaryExists, setSummaryExists] = useState(true);
 
   const testData = [
