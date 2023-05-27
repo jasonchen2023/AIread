@@ -5,15 +5,13 @@ import './FileUpload.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { uploadFile, getAllFiles } from '../../services/firebase';
+import FileUploadModal from './fileUploadModal';
 
 function FileUpload() {
   const [dragActive, setDragActive] = useState(false);
-  const [uploadedPages, setUploadedPages] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
 
   const inputRef = useRef(null);
-  const user = useSelector((state) => state.user.displayName);
-  const dispatch = useDispatch();
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -27,6 +25,7 @@ function FileUpload() {
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
+    e.target.value = '';
     if (file.type !== 'application/pdf') {
       console.error(file.name, 'is not a pdf file.');
       // eslint-disable-next-line
@@ -62,21 +61,13 @@ function FileUpload() {
     inputRef.current.click();
   };
 
-  const handleFileClick = (index) => {
-    setUploadedPages((prevPages) => {
-      const updatedPages = [...prevPages];
-      updatedPages[index].expanded = !updatedPages[index].expanded;
-      return updatedPages;
-    });
-  };
-
-  const processFileUpload = () => {
-    const file = selectedFile;
+  const processFileUpload = (newFile, title, color) => {
+    const file = newFile;
     if (file === null) {
       // eslint-disable-next-line
       toast('No File Selected');
     } else {
-      uploadFile(file);
+      uploadFile(file, title, color);
       setSelectedFile(null);
     }
   };
@@ -87,6 +78,7 @@ function FileUpload() {
 
   return (
     <div id="fileUploadContainer">
+      <FileUploadModal selectedFile={selectedFile} processFileUpload={processFileUpload} processFileCancel={processFileCancel} />
       <form id="form-file-upload" onDragEnter={handleDrag} onSubmit={(e) => e.preventDefault()}>
         <input ref={inputRef} type="file" id="input-file-upload" webkitdirectory onChange={handleFileSelect} />
         {/* eslint-disable-next-line */}
@@ -100,17 +92,6 @@ function FileUpload() {
         </label>
         {dragActive && <div id="drag-file-element" onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop} />}
       </form>
-      {selectedFile && (
-        <div id="selectedFileContainer">
-          <div id="selectedFileDiv">
-            Selected File: <span id="selectedFile">{selectedFile.name}</span>
-          </div>
-          <div id="upload-buttons">
-            <button type="button" id="fileUploadButton" onClick={processFileUpload}>Upload</button>
-            <button type="button" id="cancelButton" onClick={processFileCancel}>Cancel</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

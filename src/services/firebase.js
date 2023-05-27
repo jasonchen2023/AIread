@@ -146,7 +146,7 @@ export function logOut(navigate) {
 // =========================================================================================================
 
 // uploads a file to firebase storage, adds a document to firestore, runs pdf to text
-export function uploadFile(file) {
+export function uploadFile(file, title, color) {
   const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
   uploadBytes(storageRef, file)
     .then(() => {
@@ -163,7 +163,8 @@ export function uploadFile(file) {
             const chunks = chunkify(rawContent);
 
             await addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
-              title: file.name,
+              title,
+              color,
               author: '',
               topLevelSummary: '',
               url,
@@ -190,9 +191,11 @@ export function getAllFiles() {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const files = [];
         querySnapshot.forEach((el) => {
+          console.log(el.data());
           files.push({
             id: el.id,
             title: el.data().title,
+            color: el.data().color,
           });
         });
         dispatch({ type: ActionTypes.FETCH_FILES, payload: { files } });

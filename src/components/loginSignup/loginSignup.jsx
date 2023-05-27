@@ -54,7 +54,7 @@ export default function LoginSignup(props) {
         <h2>Login</h2>
         <div className={styles.panelFields}>
           <input placeholder="Email" value={email} onChange={handleEmailChange} />
-          <input placeholder="Password" value={password} onChange={handlePasswordChange} />
+          <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
         </div>
         <button type="button" onClick={handleLogin}>Log in</button>
         <p>Don&apos;t have an account? <span className={styles.signupLoginSpan} role="button" tabIndex={0} title="Sign Up" onClick={toggleLogin}>Sign up</span></p>
