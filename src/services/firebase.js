@@ -207,12 +207,17 @@ export function getAllFiles() {
 // gets file by id
 export function getFile(id) {
   return (dispatch) => {
-    getDoc(doc(db, `Users/${auth.currentUser.uid}/readings`, id)).then((docSnap) => {
-      dispatch({
-        type: ActionTypes.SELECT_FILE,
-        payload: { ...docSnap.data(), id: docSnap.id },
+    try {
+      const q = query(doc(db, `Users/${auth.currentUser.uid}/readings`, id));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        dispatch({
+          type: ActionTypes.SELECT_FILE,
+          payload: { ...querySnapshot.data(), id: querySnapshot.id },
+        });
       });
-    });
+    } catch (error) {
+      console.error('Error fetching files from Firestore:', error);
+    }
   };
 }
 
