@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllFiles, deleteFile } from '../../firebase';
-import { selectFile } from '../../actions';
+import { useSelector } from 'react-redux';
+import { deleteFile } from '../../services/firebase';
 import trash from '../../img/trash.png';
 import './FileList.scss';
 

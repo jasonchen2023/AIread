@@ -1,16 +1,11 @@
 import { initializeApp } from 'firebase/app';
-import {
-  createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword,
-} from 'firebase/auth';
-import {
-  addDoc,
-  collection,
-  doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, deleteDoc,
-} from 'firebase/firestore';
-import {
-  getStorage, ref, uploadBytes, getDownloadURL, deleteObject,
-} from 'firebase/storage';
-import { ActionTypes } from './actions';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword } from 'firebase/auth';
+import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, updateDoc, arrayUnion, deleteDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import axios from 'axios';
+import { ActionTypes } from '../actions';
+import { convertPDFtoText, chunkify } from './processFile';
+import { BASE_URL } from '../utils/constants';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -27,9 +22,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage();
 export const auth = getAuth(app);
 
+// USER DOCUMENT ACTIONS
+// =========================================================================================================
 export function createUserDoc(email, displayName, age) {
   return (dispatch) => {
     setDoc(doc(db, 'Users', `${auth.currentUser.uid}`), {
@@ -40,9 +36,7 @@ export function createUserDoc(email, displayName, age) {
       .then(() => {
         dispatch({
           type: ActionTypes.SET_USER,
-          payload: {
-            email, displayName, age, fieldOfInterest: '',
-          },
+          payload: { email, displayName, age, fieldOfInterest: '' },
         });
       });
   };
@@ -75,6 +69,23 @@ export function fetchUserDoc() {
   };
 }
 
+export function uploadProfileImage(file, successCallback, failureCallback) {
+  const storageRef = ref(getStorage(), `profilePics/${auth.currentUser.uid}`);
+  uploadBytes(storageRef, file)
+    .then(() => {
+      getDownloadURL(storageRef).then((url) => {
+        updateProfile(auth.currentUser, { photoURL: url });
+        successCallback(url);
+      });
+    })
+    .catch((error) => {
+      console.error('Error uploading file:', error);
+      failureCallback();
+    });
+}
+
+// LOGIN SYSTEM ACTIONS
+// =========================================================================================================
 export function login(email, password, failureToast, fullpageApi) {
   return (dispatch) => {
     signInWithEmailAndPassword(auth, email, password)
@@ -92,9 +103,7 @@ export function signup(email, password, displayName, age, failureToast, fullpage
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         fullpageApi.silentMoveTo(1);
-        updateProfile(auth.currentUser, {
-          displayName,
-        }).then(() => {
+        updateProfile(auth.currentUser, { displayName }).then(() => {
           dispatch(createUserDoc(
             email,
             displayName,
@@ -133,38 +142,43 @@ export function logOut(navigate) {
   };
 }
 
+// FILE ACTIONS
+// =========================================================================================================
+
+// uploads a file to firebase storage, adds a document to firestore, runs pdf to text
 export function uploadFile(file) {
   const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
-
   uploadBytes(storageRef, file)
     .then(() => {
-      getDownloadURL(storageRef).then((url) => {
-        console.log(`adding reading doc in firestore (url: ${url})`);
-        addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
-          title: file.name,
-          url,
-          summaries: {},
+      getDownloadURL(storageRef)
+        .then(async (url) => {
+          console.log(`adding reading doc in firestore (url: ${url})`);
+
+          try {
+            // process PDF to text
+            const rawContent = await convertPDFtoText(url);
+            console.log(rawContent);
+
+            // process text to chunks
+            const chunks = chunkify(rawContent);
+
+            await addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
+              title: file.name,
+              author: '',
+              topLevelSummary: '',
+              url,
+              rawContent,
+              chunks,
+            });
+          } catch (err) {
+            console.log(`error: ${err}`);
+          }
         });
-      });
     })
+
     .catch((error) => {
       console.error('Error uploading file:', error);
       throw error;
-    });
-}
-
-export function uploadProfileImage(file, successCallback, failureCallback) {
-  const storageRef = ref(getStorage(), `profilePics/${auth.currentUser.uid}`);
-  uploadBytes(storageRef, file)
-    .then(() => {
-      getDownloadURL(storageRef).then((url) => {
-        updateProfile(auth.currentUser, { photoURL: url });
-        successCallback(url);
-      });
-    })
-    .catch((error) => {
-      console.error('Error uploading file:', error);
-      failureCallback();
     });
 }
 
@@ -192,12 +206,17 @@ export function getAllFiles() {
 // gets file by id
 export function getFile(id) {
   return (dispatch) => {
-    getDoc(doc(db, `Users/${auth.currentUser.uid}/readings`, id)).then((docSnap) => {
-      dispatch({
-        type: ActionTypes.SELECT_FILE,
-        payload: { ...docSnap.data(), id: docSnap.id },
+    try {
+      const q = query(doc(db, `Users/${auth.currentUser.uid}/readings`, id));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        dispatch({
+          type: ActionTypes.SELECT_FILE,
+          payload: { ...querySnapshot.data(), id: querySnapshot.id },
+        });
       });
-    });
+    } catch (error) {
+      console.error('Error fetching files from Firestore:', error);
+    }
   };
 }
 
@@ -222,4 +241,26 @@ export function deleteFile(id, title) {
   }).catch((error) => {
     console.error('Error deleting document from storage:', error);
   });
+}
+
+// OPENAI SUMMARY PROCESSING
+// =========================================================================================================
+export async function makeSummaries(fileID, chunkList) {
+  const contentArray = chunkList.map((chunk) => chunk.content);
+  console.log(contentArray);
+
+  const res = await axios.post(`${BASE_URL}/summaries`, {
+    summaryType: 'document',
+    content: contentArray,
+  });
+  const summaryArray = res.data.map((chunk) => chunk[1]);
+  console.log(summaryArray);
+
+  // from chatgpt
+  const documentRef = doc(db, `Users/${auth.currentUser.uid}/readings`, fileID);
+  const updatedChunks = chunkList.map((chunk, index) => {
+    // Replace the summary of each chunk with the new summary from newSummaries
+    return { ...chunk, summary: summaryArray[index] };
+  });
+  await updateDoc(documentRef, { chunks: updatedChunks });
 }

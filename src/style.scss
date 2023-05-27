@@ -1,7 +1,14 @@
 @use './utils/colors' as c;
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 :root {
   text-size-adjust: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body,

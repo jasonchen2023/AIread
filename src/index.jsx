@@ -7,9 +7,7 @@ import rootReducer from './reducers';
 import App from './components/app';
 import './style.scss';
 
-const store = configureStore({
-  reducer: rootReducer,
-});
+const store = configureStore({ reducer: rootReducer });
 
 const root = createRoot(document.getElementById('main'));
 root.render(
