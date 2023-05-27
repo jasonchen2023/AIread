@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import './FileUpload.scss';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { uploadFile, getAllFiles } from '../../firebase';
 
 function FileUpload() {
@@ -73,17 +74,9 @@ function FileUpload() {
     const file = selectedFile;
     if (file === null) {
       // eslint-disable-next-line
-      alert('No File Selected');
+      toast('No File Selected');
     } else {
-      uploadFile(file)
-        .then((downloadURL) => {
-          console.log('Download URL:', downloadURL);
-          dispatch(getAllFiles());
-          // Handle the download URL (save it to state, send it to the server, etc.)
-        })
-        .catch((error) => {
-          console.error('Error uploading file:', error);
-        });
+      uploadFile(file);
     }
   };
 
@@ -103,9 +96,9 @@ function FileUpload() {
         {dragActive && <div id="drag-file-element" onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop} />}
       </form>
       {selectedFile && (
-      <div>
-        Selected File: {selectedFile.name}
-      </div>
+        <div>
+          Selected File: {selectedFile.name}
+        </div>
       )}
       <button type="button" onClick={processFile}>Upload</button>
     </div>

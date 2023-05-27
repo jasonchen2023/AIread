@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import styles from './styles.module.scss';
 import background from '../../assets/background3.svg';
 import { login, signup } from '../../firebase';
@@ -10,9 +11,10 @@ export default function LoginSignup(props) {
   const [password, setPassword] = useState('');
   const [age, setAge] = useState('18');
   const [displayName, setDisplayName] = useState('');
-  const [error, setError] = useState('');
 
   const dispatch = useDispatch();
+
+  const failureToast = (message) => toast(message);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -34,20 +36,16 @@ export default function LoginSignup(props) {
     setIsLogin(!isLogin);
   };
 
-  const updateError = (message) => {
-    setError(message);
-  };
-
   const handleLogin = () => {
-    dispatch(login(email, password, updateError, props.fullpageApi));
+    dispatch(login(email, password, failureToast, props.fullpageApi));
   };
 
   const handleSignup = () => {
     if (email.trim().length === 0 || password.trim().length === 0 || displayName.trim().length === 0 || !parseInt(age, 10)) {
-      setError('Please fill out all fields!');
+      failureToast('Please fill out all fields!');
       return;
     }
-    dispatch(signup(email, password, displayName, parseInt(age, 10), updateError, props.fullpageApi));
+    dispatch(signup(email, password, displayName, parseInt(age, 10), failureToast, props.fullpageApi));
   };
 
   const loginPanel = () => {
@@ -80,7 +78,6 @@ export default function LoginSignup(props) {
         <button type="button" onClick={handleSignup}>Sign up</button>
         <p>Already have an account? <span className={styles.signupLoginSpan} role="button" tabIndex={0} title="Log in" onClick={toggleLogin}>Log in</span></p>
         <hr />
-        <span className={styles.errorText}>{error.length > 0 ? error : null}</span>
       </div>
     );
   };

@@ -1,0 +1,96 @@
+@use '../../utils/colors' as c;
+
+#page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  gap: 10px;
+  background-color: c.$aiComponentBlue;
+
+  #profileContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    min-width: 200px;
+    min-height: 200px;
+    background-color: gray;
+    border-radius: 50%;
+    align-self: center;
+    overflow: hidden;
+    margin-block: 50px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    img {
+      width: inherit;
+      height: inherit;
+    }
+  }
+
+  button {
+    width: 100px;
+    background-color: c.$aiOrange;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .logoutButton {
+    align-self: center;
+    min-height: 50px;
+  }
+
+  .resetPasswordButton {
+    border-radius: 0 10px 10px 0;
+  }
+
+  button:hover {
+    cursor: pointer;
+    filter: brightness(85%);
+  }
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: row;
+
+  p {
+    text-align: end;
+    padding-inline-end: 10px;
+    flex: 1
+  }
+
+  .ageFieldContainer {
+    display: flex;
+    width: 50vw;
+  }
+
+  input {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  input[type=text] {
+    width: 50vw;
+    box-sizing: border-box;
+  }
+
+  input:disabled {
+    background-color: rgb(240, 240, 240);
+  }
+
+  .resetPasswordInput {
+    border-radius: 10px 0 0 10px;
+  }
+
+  .rightContainer {
+    display: flex;
+    flex: 1
+  }
+}

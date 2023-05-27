@@ -21,6 +21,15 @@
       display: flex;
       flex-direction: column;
       flex: 1;
+
+      .introContentContainer {
+        display: flex;
+        flex-direction: column;
+        background-color: c.$aiComponentBlue;
+        padding: 15px;
+        border-radius: 20px;
+
+      }
     }
 
     img {

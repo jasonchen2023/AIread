@@ -8,31 +8,17 @@ import './FileList.scss';
 function FileList() {
   const allFiles = useSelector((state) => state.files.allFiles);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getAllFiles());
-  }, []);
-
-  useEffect(() => {
-    console.log(allFiles);
-  }, [allFiles]);
-
   return (
     <div className="file-list">
-      <h2>File List</h2>
+      <h2 id="readingsHeader">Your Readings</h2>
       <ul>
-        {Object.keys(allFiles).map((fileId) => {
-          const file = allFiles[fileId];
+        {allFiles.map((el) => {
           return (
-            <li key={fileId}>
-              <NavLink
-                to={`/reading/${fileId}`}
-                rel="noopener noreferrer"
-              >
-                {file.name}
+            <div className="card" key={el.id}>
+              <NavLink to={`/reading/${el.id}`} rel="noopener noreferrer">
+                <div className="fileTitle">{el.title}</div>
               </NavLink>
-            </li>
+            </div>
           );
         })}
       </ul>
