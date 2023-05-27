@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword } from 'firebase/auth';
 import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import axios from 'axios';
 import { ActionTypes } from '../actions';
 
 // Your web app's Firebase configuration
@@ -143,23 +144,38 @@ export function logOut(navigate) {
 // FILE ACTIONS
 // =========================================================================================================
 
+// uploads a file to firebase storage, adds a document to firestore, runs pdf to text
 export function uploadFile(file) {
-  const storageRef = ref(getStorage(), `Readings/${file.name}`);
-
-  // upload the file
+  const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
   uploadBytes(storageRef, file)
     .then(() => {
-      getDownloadURL(storageRef).then((url) => {
+      getDownloadURL(storageRef).then(async (url) => {
         console.log(`adding reading doc in firestore (url: ${url})`);
-        addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
-          title: file.name,
-          author: '',
-          topLevelSummary: '',
 
-          url,
-          raw_content: '',
-          chunks: [],
-        });
+        // Convert PDF to text
+        try {
+          console.log(`converting pdf with title: ${file.name}`);
+          const res = await axios.post('https://selectpdf.com/api2/pdftotext/', {
+            key: import.meta.env.VITE_PDFTOTEXT_API_KEY,
+            url,
+          });
+          console.log('pdf converted successfully');
+
+          // Append the result to the raw_content field in Firebase
+          const rawContent = res.data.trim();
+
+          // Add document to Firestore
+          await addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
+            title: file.name,
+            author: '',
+            topLevelSummary: '',
+            url,
+            rawContent,
+            chunks: [],
+          });
+        } catch (err) {
+          console.log(`error: ${err}`);
+        }
       });
     })
     .catch((error) => {
