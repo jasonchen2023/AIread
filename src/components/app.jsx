@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Reading from './reading/reading';
 import FallBack from './fallback';
 import Home from './homePage/home';
-import { auth } from '../firebase';
+import { auth } from '../services/firebase';
 import Landing from './landing/landing';
 import Profile from './profile/profile';
 
