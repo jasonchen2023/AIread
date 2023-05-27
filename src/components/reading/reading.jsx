@@ -1,10 +1,13 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { ChakraProvider, Flex, Button, Box, Container, Divider, Text, Heading } from '@chakra-ui/react';
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
+import { getFile } from '../../services/firebase';
 
+import styles from './styles.module.scss';
 import './reading.module.scss';
 
 function ReadingHeader(props) {
@@ -42,9 +45,19 @@ function ReadingHeader(props) {
 }
 
 function Reading(props) {
-  const { id } = useParams();
-  const [summaryExists, setSummaryExists] = useState(true);
+  const selectedFile = useSelector((state) => state.files.selectedFile);
+  const [fileText, setFileText] = useState('');
 
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const [summaryExists, setSummaryExists] = useState(false);
+
+  useEffect(() => {
+    dispatch(getFile(id));
+  }, []);
+
+  /*
   const testData = [
     [
       '**Abstract**\nWe report the development of GPT-4, a large-scale, multimodal model which can accept image and text inputs and produce text outputs. While less capable than humans in many real-world scenarios, GPT-4 exhibits human-level performance on various professional and academic benchmarks, including passing a simulated bar exam with a score around the top 10% of test takers. GPT-4 is a Transformerbased model pre-trained to predict the next token in a document. The post-training alignment process results in improved performance on measures of factuality and adherence to desired behavior. A core component of this project was developing infrastructure and optimization methods that behave predictably across a wide range of scales. This allowed us to accurately predict some aspects of GPT-4’s performance based on models trained with no more than 1/1,000th the compute of GPT-4.',
@@ -63,11 +76,18 @@ function Reading(props) {
       '- This technical report focuses on the capabilities, limitations, and safety properties of GPT-4, a Transformer-style model pre-trained to predict the next token in a document. \n- The model was fine-tuned using Reinforcement Learning from Human Feedback (RLHF).\n- No further details about the architecture, hardware, training compute, dataset construction, training method, etc. are included in this report. \n- A system card accompanying the release provides some initial steps and ideas for independent auditing of this technology. \n- Further technical details will be made available to additional third parties to consider the competitive and safety considerations against the scientific value of further transparency.',
     ],
   ];
+  */
 
-  const testTrue = true;
+  const testData = [
+    [
+      selectedFile.rawContent,
+      '',
+    ],
+  ];
+
   const chunks = testData.map((entry, index) => (
     <div>
-      <ReadingEntry content={entry[0]} summary={entry[1]} summary_upToDate={testTrue} />
+      <ReadingEntry content={entry[0]} summary={entry[1]} summary_upToDate={false} />
       <Divider />
     </div>
     // <ReadingEntry content={entry["content"]} summary={entry["summary"]} summary_upToDate={entry["summary_upToDate"]} />
@@ -98,55 +118,3 @@ export default function ReadingWrapper() {
     </div>
   );
 }
-
-/*
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import styles from './styles.module.scss';
-import { getFile } from '../../firebase';
-
-function Reading() {
-  const selectedFile = useSelector((state) => state.files.selectedFile);
-  const [fileText, setFileText] = useState('');
-
-  const convertPdfToText = async () => {
-    try {
-      console.log(`converting pdf with title: ${selectedFile.title}`);
-      const res = await axios.postForm('https://selectpdf.com/api2/pdftotext/', {
-        key: import.meta.env.VITE_PDFTOTEXT_API_KEY,
-        url: selectedFile.url,
-      });
-      setFileText(res.data.trim());
-    } catch (err) {
-      console.log(`error: ${err}`);
-    }
-  };
-
-  const dispatch = useDispatch();
-  const { id } = useParams();
-
-  useEffect(() => {
-    dispatch(getFile(id));
-  }, []);
-
-  useEffect(() => {
-    if (selectedFile.url && selectedFile.id === id) {
-      convertPdfToText();
-    }
-  }, [selectedFile.url]);
-
-  return (
-    <div id={styles.container}>
-      <h3>Reading:</h3>
-      {selectedFile.title}
-
-      <div id={styles.content}>
-        <h3>Content:</h3>
-        {fileText}
-      </div>
-    </div>
-  );
-}
-*/

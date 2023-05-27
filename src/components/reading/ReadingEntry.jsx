@@ -50,7 +50,7 @@ function ReadingEntry(props) {
         p={2}
         minH="100%"
       >
-        <Text whiteSpace="pre-wrap"><ReactMarkdown components={ChakraUIRenderer()} children={props.content} skipHtml /></Text>
+        <Text whiteSpace="pre-wrap">{props.content}</Text>
       </Box>
       <Box
         flex="1"
