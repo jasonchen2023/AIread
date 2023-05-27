@@ -1,15 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import {
-  createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword,
-} from 'firebase/auth';
-import {
-  addDoc,
-  collection,
-  doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot,
-} from 'firebase/firestore';
-import {
-  getStorage, ref, uploadBytes, getDownloadURL,
-} from 'firebase/storage';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword } from 'firebase/auth';
+import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { ActionTypes } from './actions';
 
 // Your web app's Firebase configuration
@@ -40,9 +32,7 @@ export function createUserDoc(email, displayName, age) {
       .then(() => {
         dispatch({
           type: ActionTypes.SET_USER,
-          payload: {
-            email, displayName, age, fieldOfInterest: '',
-          },
+          payload: { email, displayName, age, fieldOfInterest: '' },
         });
       });
   };
@@ -92,9 +82,7 @@ export function signup(email, password, displayName, age, failureToast, fullpage
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         fullpageApi.silentMoveTo(1);
-        updateProfile(auth.currentUser, {
-          displayName,
-        }).then(() => {
+        updateProfile(auth.currentUser, { displayName }).then(() => {
           dispatch(createUserDoc(
             email,
             displayName,

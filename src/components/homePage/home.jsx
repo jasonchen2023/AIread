@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import {
-  fetchUserDoc, logOut, auth, getAllFiles,
-} from '../../firebase';
+import { fetchUserDoc, logOut, auth, getAllFiles } from '../../firebase';
 import * as Constants from '../../utils/constants';
 import FileUpload from './FileUpload';
 import FileList from './FileList';

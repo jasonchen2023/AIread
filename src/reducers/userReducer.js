@@ -10,13 +10,9 @@ const initialState = {
 const UserReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case ActionTypes.SET_USER:
-      return {
-        ...state, email: action.payload.email, displayName: action.payload.displayName, age: action.payload.age, fieldOfInterest: action.payload.fieldOfInterest,
-      };
+      return { ...state, email: action.payload.email, displayName: action.payload.displayName, age: action.payload.age, fieldOfInterest: action.payload.fieldOfInterest };
     case ActionTypes.HIDE_USER:
-      return {
-        ...state, email: '', displayName: '', age: 0, fieldOfInterest: '',
-      };
+      return { ...state, email: '', displayName: '', age: 0, fieldOfInterest: '' };
     case ActionTypes.UPDATE_PROFILE: {
       const newProfile = {};
       Object.keys(state).forEach((key, index) => {
