@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import './FileUpload.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { uploadFile, getAllFiles } from '../../firebase';
+import { uploadFile, getAllFiles } from '../../services/firebase';
 
 function FileUpload() {
   const [dragActive, setDragActive] = useState(false);

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import styles from './styles.module.scss';
 import background from '../../assets/background3.svg';
-import { login, signup } from '../../firebase';
+import { login, signup } from '../../services/firebase';
 
 export default function LoginSignup(props) {
   const [isLogin, setIsLogin] = useState(true);

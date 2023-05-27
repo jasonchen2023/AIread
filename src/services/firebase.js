@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword } from 'firebase/auth';
-import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { ActionTypes } from './actions';
+import { ActionTypes } from '../actions';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -22,6 +22,8 @@ const db = getFirestore(app);
 const storage = getStorage();
 export const auth = getAuth(app);
 
+// USER DOCUMENT ACTIONS
+// =========================================================================================================
 export function createUserDoc(email, displayName, age) {
   return (dispatch) => {
     setDoc(doc(db, 'Users', `${auth.currentUser.uid}`), {
@@ -65,6 +67,23 @@ export function fetchUserDoc() {
   };
 }
 
+export function uploadProfileImage(file, successCallback, failureCallback) {
+  const storageRef = ref(getStorage(), `profilePics/${auth.currentUser.uid}`);
+  uploadBytes(storageRef, file)
+    .then(() => {
+      getDownloadURL(storageRef).then((url) => {
+        updateProfile(auth.currentUser, { photoURL: url });
+        successCallback(url);
+      });
+    })
+    .catch((error) => {
+      console.error('Error uploading file:', error);
+      failureCallback();
+    });
+}
+
+// LOGIN SYSTEM ACTIONS
+// =========================================================================================================
 export function login(email, password, failureToast, fullpageApi) {
   return (dispatch) => {
     signInWithEmailAndPassword(auth, email, password)
@@ -121,38 +140,31 @@ export function logOut(navigate) {
   };
 }
 
-export function uploadFile(file) {
-  const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
+// FILE ACTIONS
+// =========================================================================================================
 
+export function uploadFile(file) {
+  const storageRef = ref(getStorage(), `Readings/${file.name}`);
+
+  // upload the file
   uploadBytes(storageRef, file)
     .then(() => {
       getDownloadURL(storageRef).then((url) => {
         console.log(`adding reading doc in firestore (url: ${url})`);
         addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
           title: file.name,
+          author: '',
+          topLevelSummary: '',
+
           url,
-          summaries: {},
+          raw_content: '',
+          chunks: [],
         });
       });
     })
     .catch((error) => {
       console.error('Error uploading file:', error);
       throw error;
-    });
-}
-
-export function uploadProfileImage(file, successCallback, failureCallback) {
-  const storageRef = ref(getStorage(), `profilePics/${auth.currentUser.uid}`);
-  uploadBytes(storageRef, file)
-    .then(() => {
-      getDownloadURL(storageRef).then((url) => {
-        updateProfile(auth.currentUser, { photoURL: url });
-        successCallback(url);
-      });
-    })
-    .catch((error) => {
-      console.error('Error uploading file:', error);
-      failureCallback();
     });
 }
 
