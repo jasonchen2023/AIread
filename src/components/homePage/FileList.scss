@@ -1,6 +1,11 @@
 .file-list {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  min-width: 600px;
+
+  ul {
+    padding: 0;
+  }
 }
 
 .fileRow {
@@ -10,30 +15,55 @@
   justify-content: space-between;
 }
 
-#readingsHeader {
-  margin-left: 40px;
+#headerRowContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+
+  input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
 }
 
-.card {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 10px;
-  width: 95%;
-  background-color: white;
+#readingsHeader {
+  font-weight: 700;
+  font-size: 34px;
+  margin: 0;
+}
+
+.cardy {
   display: flex;
+  border: 1px solid #ccc;
+  padding: 10px;
+  height: 50px;
+  width: 100%;
+  background-color: white;
   justify-content: space-between;
 }
 
-.card:hover {
+#readingSwatch {
+  width: 30px;
+  height: 50px;
+}
+
+.cardy:hover {
   filter: brightness(85%);
 }
 
-.card a {
+.cardy a {
   text-decoration: none;
   color: #333;
 }
 
 .fileTitle {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
   font-size: 16px;
 }
 

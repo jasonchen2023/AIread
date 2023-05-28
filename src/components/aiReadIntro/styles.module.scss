@@ -25,16 +25,20 @@
       .introContentContainer {
         display: flex;
         flex-direction: column;
+        gap: 20px;
         background-color: c.$aiComponentBlue;
         padding: 15px;
         border-radius: 20px;
 
+        p {
+          margin: 0;
+        }
       }
     }
 
     img {
       flex: 2;
-      width: 500px;
+      min-width: 1000px;
     }
   }
 

@@ -3,7 +3,6 @@
 #page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   gap: 10px;
   background-color: c.$aiComponentBlue;
 
@@ -61,8 +60,10 @@
 
   p {
     text-align: end;
+    align-self: center;
     padding-inline-end: 10px;
-    flex: 1
+    flex: 1;
+    margin: 0;
   }
 
   .ageFieldContainer {

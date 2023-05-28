@@ -21,7 +21,7 @@ export default function AIreadIntro(props) {
               When a user uploads readings to the platform, they can receive and save summaries and explanations of the texts (with varying complexities).
             </p>
             <p>
-              Original texts and their summaries are viewed side by side,helping users break down the structure of the readings and the significance of each section,
+              Original texts and their summaries are viewed side by side, helping users break down the structure of the readings and the significance of each section,
               and users can add to the AI-generated summaries with their own notes and insights, resulting in an interactive AI-facilitated learning environment.
             </p>
           </div>

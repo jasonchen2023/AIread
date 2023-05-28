@@ -31,7 +31,11 @@
   border-style: dashed;
   border-color: #cbd5e1;
   // background-color: #f8fafc;
-  background-color: #DFFBFF;
+  background-color: c.$aiDragDropBlue;
+
+  button {
+    font-weight: 700;
+  }
 }
 
 #label-file-upload.drag-active {
@@ -94,7 +98,7 @@
   margin: 20px;
 }
 
-#cancelButton:hover{
+#cancelButton:hover {
   cursor: pointer;
   filter: brightness(85%);
 }

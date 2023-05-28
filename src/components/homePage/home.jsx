@@ -22,7 +22,7 @@ export default function Home(props) {
     <div id={styles.homeContainer}>
       <Nav />
       <div id={styles.welcome}>
-        Welcome Home {user}
+        Welcome Home, {user}
       </div>
       <div id={styles.fileUpload}>
         <FileUpload />
