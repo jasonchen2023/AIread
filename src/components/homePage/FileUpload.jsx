@@ -29,7 +29,7 @@ function FileUpload() {
     if (file.type !== 'application/pdf') {
       console.error(file.name, 'is not a pdf file.');
       // eslint-disable-next-line
-      alert('Please select a PDF');
+      toast('Please select a PDF file!')
     } else {
       setSelectedFile(file);
     }
@@ -40,7 +40,7 @@ function FileUpload() {
     if (file.type !== 'application/pdf') {
       console.error(file.name, 'is not a pdf file.');
       // eslint-disable-next-line
-      alert('Please select a PDF');
+      toast('Please select a PDF file!')
     } else {
       setSelectedFile(file);
     }
