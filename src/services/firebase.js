@@ -157,7 +157,6 @@ export function uploadFile(file, title, color) {
           try {
             // process PDF to text
             const rawContent = await convertPDFtoText(url);
-            console.log(rawContent);
 
             // process text to chunks
             const chunks = chunkify(rawContent);

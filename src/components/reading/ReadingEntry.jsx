@@ -57,6 +57,7 @@ function ReadingEntry(props) {
         bg="gray.50"
         p={2}
         minH="100%"
+        style={{ borderRadius: '16px' }}
         position="relative"
         borderRadius="l"
       >
