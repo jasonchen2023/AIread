@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ChakraProvider, Flex, Button, Box, Container, Divider, Heading } from '@chakra-ui/react';
+import { toast } from 'react-toastify';
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
 import style from './styles.module.scss';
-import { getFile, makeSummaries, auth } from '../../services/firebase';
+import { getFile, makeSummaries, auth, pushUserNote } from '../../services/firebase';
 import Chat from '../chat/chat';
 
 import './reading.module.scss';
@@ -35,9 +36,11 @@ function ReadingHeader(props) {
     >
       <Box
         flex="1"
-        // bg="blue.200"
+        bg="white"
         p={2}
         minH="100%"
+        style={{ borderRadius: '5px' }}
+        boxShadow="base"
       >
         <Heading size="m">Your Document</Heading>
         {pdfView ? (
@@ -51,14 +54,16 @@ function ReadingHeader(props) {
         justifyContent="space-between"
         alignItems="center"
         width="50%"
-        // bg="orange"
+        bg="white"
         p={2}
         minH="100%"
+        style={{ borderRadius: '5px' }}
         position="relative"
         borderRadius="l"
+        boxShadow="base"
       >
         <Heading size="m">AI Summary</Heading>
-        <Button size="sm" colorScheme="blue" onClick={onGenerateClick}>{props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
+        <Button size="sm" colorScheme="pink" onClick={onGenerateClick}>{props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
       </Flex>
       <Divider />
     </Flex>
@@ -83,6 +88,14 @@ function Reading(props) {
     }
   }, [selectedFile]);
 
+  const addUserNote = (noteText, chunkNum, successCallback, errorCallback) => {
+    if (noteText.trim().length === 0) {
+      toast('Please add text to your note');
+      return;
+    }
+    pushUserNote(id, noteText, chunkNum, successCallback, errorCallback);
+  };
+
   useEffect(() => {
     console.log(pdfView);
   }, [pdfView]);
@@ -92,7 +105,7 @@ function Reading(props) {
       return selectedFile.chunks?.map((chunk, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={index}>
-          <ReadingEntry content={chunk.content} summary={chunk.summary} summary_upToDate />
+          <ReadingEntry chunkNum={index} content={chunk.content} summary={chunk.summary} userNotes={chunk.userNotes} summary_upToDate addUserNote={addUserNote} />
           <Divider />
         </div>
       ));
