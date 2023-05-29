@@ -102,9 +102,10 @@ function Reading(props) {
         <Container maxWidth="none" flex={1}>
           <Chat />
           <ReadingHeader />
-
           {pdfView && (
-            <embed src={selectedFile.url} width="50%" height="800" type="application/pdf" />
+            <div id={style.pdfDisplay}>
+              <embed src={selectedFile.url} width="70%" height="1000" type="application/pdf" />
+            </div>
           )}
           {renderChunks()}
         </Container>
