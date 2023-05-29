@@ -266,16 +266,16 @@ export function pushUserNote(readingId, note, chunkNum, successCallback, errorCa
 
 // OPENAI SUMMARY PROCESSING
 // =========================================================================================================
-export async function makeSummaries(fileID, chunkList) {
+export async function makeSummaries(fileID, chunkList, token) {
   const contentArray = chunkList.map((chunk) => chunk.content);
   console.log(contentArray);
 
   const res = await axios.post(`${BASE_URL}/summaries`, {
     summaryType: 'document',
     content: contentArray,
-  });
+  }, { headers: { Authorization: token } });
   const summaryArray = res.data.map((chunk) => chunk[1]);
-  console.log(summaryArray);
+  console.log(`array: ${summaryArray}`);
 
   // from chatgpt
   const documentRef = doc(db, `Users/${auth.currentUser.uid}/readings`, fileID);
