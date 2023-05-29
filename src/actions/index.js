@@ -7,6 +7,7 @@ export const ActionTypes = {
   FETCH_FILES: 'FETCH_FILES',
   SELECT_FILE: 'SELECT_FILE',
   UPDATE_PROFILE: 'UPDATE_PROFILE',
+  SHOW_PDF: 'SHOW_PDF',
 };
 
 export function increment() {
@@ -28,5 +29,12 @@ export function selectFile(fileName, fileUrl) {
   return {
     type: ActionTypes.SELECT_FILE,
     payload: { name: fileName, url: fileUrl },
+  };
+}
+
+export function showPDF(value) {
+  return {
+    type: ActionTypes.SHOW_PDF,
+    payload: { showPDF: value },
   };
 }
