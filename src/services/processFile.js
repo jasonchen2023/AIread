@@ -20,23 +20,6 @@ export async function convertPDFtoText(url) {
   }
 }
 
-/*
-chunks=
-[
-  {
-    "title": "Abstract",
-    "content": "We report the development of GPT-4,...",
-    "summary": "- We developed GPT-4, a...",
-    "summary_upToDate": true
-  },
-  {
-    "title": "Introduction",
-    "content": "This technical report presents GPT-4,...",
-    "summary": "",
-    "summary_upToDate": false
-  }
-]
-*/
 // from chatGPT
 export function chunkify(rawContent, wordsPerChunk = 500) {
   // Split the raw content into paragraphs using newlines

@@ -1,0 +1,27 @@
+.container {
+	background-color: white;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 32px;
+	border-radius: 12px;
+	border-style: solid;
+	margin-top: 24px;
+	margin-bottom: 12px;
+	display: flex;
+	flex-direction: column;
+}
+
+.inputWrapper {
+	display: flex;
+}
+
+.responseText {
+	margin-top: 16px;
+	margin-bottom: 0;
+}
+
+.headerText {
+	margin-top: 0;
+	margin-bottom: 16px;
+}
