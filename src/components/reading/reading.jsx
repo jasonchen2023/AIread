@@ -6,7 +6,7 @@ import { ChakraProvider, Flex, Button, Box, Container, Divider, Heading } from '
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
 import style from './styles.module.scss';
-import { getFile, makeSummaries } from '../../services/firebase';
+import { getFile, makeSummaries, auth } from '../../services/firebase';
 import Chat from '../chat/chat';
 
 import './reading.module.scss';
@@ -17,8 +17,13 @@ function ReadingHeader(props) {
   const pdfView = useSelector((state) => state.files.showPDF);
   const dispatch = useDispatch();
 
-  const onGenerateClick = () => {
-    makeSummaries(selectedFile.id, selectedFile.chunks);
+  const onGenerateClick = async () => {
+    try {
+      const token = await auth.currentUser.getIdToken();
+      makeSummaries(selectedFile.id, selectedFile.chunks, token);
+    } catch (err) {
+      console.log(`error: ${err}`);
+    }
   };
 
   return (

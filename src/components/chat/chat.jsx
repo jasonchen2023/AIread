@@ -3,21 +3,25 @@ import React, { useState } from 'react';
 import { Button, Input, InputGroup, InputRightAddon } from '@chakra-ui/react';
 import style from './style.module.scss';
 import { processChat } from '../../services/chat';
+import { auth } from '../../services/firebase';
 
 export default function chat() {
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState('');
 
-  const handleSubmit = () => {
-    console.log(`prompt: ${prompt}`);
+  const handleSubmit = async () => {
     if (prompt) {
+      console.log(`prompt: ${prompt}`);
       setIsLoading(true);
-      processChat(prompt)
-        .then((res) => {
-          setResponse(res.data);
-          setIsLoading(false);
-        });
+      try {
+        const token = await auth.currentUser.getIdToken();
+        const res = await processChat(prompt, token);
+        setResponse(res.data);
+      } catch (err) {
+        console.log(`error: ${err}`);
+      }
+      setIsLoading(false);
     } else {
       alert('Must enter a valid prompt');
     }
