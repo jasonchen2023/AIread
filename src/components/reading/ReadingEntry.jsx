@@ -42,7 +42,6 @@ function ReadingEntry(props) {
   const [userNoteText, setUserNoteText] = useState('');
 
   const successCallback = () => {
-    toast('Note added!');
     setUserNoteText('');
   };
 
