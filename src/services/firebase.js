@@ -264,6 +264,22 @@ export function pushUserNote(readingId, note, chunkNum, successCallback, errorCa
   });
 }
 
+export function removeUserNote(readingId, userNoteIndex, chunkNum, successCallback, errorCallback) {
+  const noteRef = doc(collection(db, `Users/${auth.currentUser.uid}/readings`), `${readingId}`);
+  return runTransaction(db, (t) => {
+    return t.get(noteRef).then((readingDoc) => {
+      if (!readingDoc.exists) return;
+      const chunkInfo = readingDoc.get('chunks');
+      const newArray = chunkInfo[chunkNum].userNotes.filter((value, index) => index !== userNoteIndex);
+      chunkInfo[chunkNum].userNotes = newArray;
+      t.set(noteRef, { chunks: chunkInfo }, { merge: true });
+    })
+      .then(() => successCallback());
+  }).catch(() => {
+    errorCallback();
+  });
+}
+
 // OPENAI SUMMARY PROCESSING
 // =========================================================================================================
 export async function makeSummaries(fileID, chunkList) {

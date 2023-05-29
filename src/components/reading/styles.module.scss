@@ -39,3 +39,10 @@
   justify-content: center;
   margin-bottom: 30px;
 }
+
+.userNoteContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
