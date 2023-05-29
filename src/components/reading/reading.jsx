@@ -10,9 +10,12 @@ import { getFile, makeSummaries } from '../../services/firebase';
 import Chat from '../chat/chat';
 
 import './reading.module.scss';
+import { showPDF } from '../../actions';
 
 function ReadingHeader(props) {
   const selectedFile = useSelector((state) => state.files.selectedFile);
+  const pdfView = useSelector((state) => state.files.showPDF);
+  const dispatch = useDispatch();
 
   const onGenerateClick = () => {
     makeSummaries(selectedFile.id, selectedFile.chunks);
@@ -32,7 +35,13 @@ function ReadingHeader(props) {
         minH="100%"
       >
         <Heading size="m">Your Document</Heading>
+        {pdfView ? (
+          <Button onClick={() => dispatch(showPDF(false))}>Hide PDF</Button>
+        ) : (
+          <Button onClick={() => dispatch(showPDF(true))}>Show PDF</Button>
+        )}
       </Box>
+
       <Flex
         justifyContent="space-between"
         alignItems="center"
@@ -54,6 +63,7 @@ function ReadingHeader(props) {
 function Reading(props) {
   const [isSelectedFileLoaded, setIsSelectedFileLoaded] = useState(false);
   const selectedFile = useSelector((state) => state.files.selectedFile);
+  const pdfView = useSelector((state) => state.files.showPDF);
 
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -67,6 +77,10 @@ function Reading(props) {
       setIsSelectedFileLoaded(true);
     }
   }, [selectedFile]);
+
+  useEffect(() => {
+    console.log(pdfView);
+  }, [pdfView]);
 
   const renderChunks = () => {
     if (isSelectedFileLoaded) {
@@ -88,6 +102,10 @@ function Reading(props) {
         <Container maxWidth="none" flex={1}>
           <Chat />
           <ReadingHeader />
+
+          {pdfView && (
+            <embed src={selectedFile.url} width="50%" height="800" type="application/pdf" />
+          )}
           {renderChunks()}
         </Container>
       </Box>

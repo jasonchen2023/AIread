@@ -3,6 +3,7 @@ import { ActionTypes } from '../actions';
 const initialState = {
   allFiles: [],
   selectedFile: {},
+  showPDF: false,
 };
 
 const FileReducer = (state = initialState, action = {}) => {
@@ -16,6 +17,11 @@ const FileReducer = (state = initialState, action = {}) => {
       return {
         ...state,
         selectedFile: action.payload,
+      };
+    case ActionTypes.SHOW_PDF:
+      return {
+        ...state,
+        showPDF: action.payload.showPDF,
       };
     default:
       return state;
