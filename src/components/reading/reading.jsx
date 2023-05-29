@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
 import style from './styles.module.scss';
+import { getFile, makeSummaries, pushUserNote, removeUserNote, auth } from '../../services/firebase';
 import { getFile, makeSummaries, auth, pushUserNote } from '../../services/firebase';
 import Chat from '../chat/chat';
 
@@ -42,7 +43,8 @@ function ReadingHeader(props) {
         style={{ borderRadius: '5px' }}
         boxShadow="base"
       >
-        <Heading size="m">Your Document</Heading>
+        <Heading size="m">Your Document:</Heading>
+        <Heading size="sm">{selectedFile.title}</Heading>
         {pdfView ? (
           <Button onClick={() => dispatch(showPDF(false))}>Hide PDF</Button>
         ) : (
@@ -96,6 +98,10 @@ function Reading(props) {
     pushUserNote(id, noteText, chunkNum, successCallback, errorCallback);
   };
 
+  const deleteUserNote = (userNoteIndex, chunkNum, successCallback, errorCallback) => {
+    removeUserNote(id, userNoteIndex, chunkNum, successCallback, errorCallback);
+  };
+
   useEffect(() => {
     console.log(pdfView);
   }, [pdfView]);
@@ -105,7 +111,7 @@ function Reading(props) {
       return selectedFile.chunks?.map((chunk, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={index}>
-          <ReadingEntry chunkNum={index} content={chunk.content} summary={chunk.summary} userNotes={chunk.userNotes} summary_upToDate addUserNote={addUserNote} />
+          <ReadingEntry chunkNum={index} content={chunk.content} summary={chunk.summary} userNotes={chunk.userNotes} summary_upToDate addUserNote={addUserNote} deleteUserNote={deleteUserNote} />
           <Divider />
         </div>
       ));

@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import { toast } from 'react-toastify';
 import styles from './styles.module.scss';
+import UserNote from './userNote';
 
 function giveSummaryStatus(props) {
   let colorScheme = '';
@@ -41,11 +42,11 @@ function giveSummaryStatus(props) {
 function ReadingEntry(props) {
   const [userNoteText, setUserNoteText] = useState('');
 
-  const successCallback = () => {
+  const successAddCallback = () => {
     setUserNoteText('');
   };
 
-  const errorCallback = () => {
+  const errorAddCallback = () => {
     toast('Unable to add note!');
   };
 
@@ -78,13 +79,15 @@ function ReadingEntry(props) {
         <ReactMarkdown components={ChakraUIRenderer()} children={props.summary} skipHtml />
         <span className={styles.userTextMarkdown}>
           {props.userNotes && props.userNotes.map((userNote, index) => {
-            return <ReactMarkdown components={ChakraUIRenderer()} children={userNote} skipHtml />;
+            return (
+              <UserNote userNote={userNote} index={index} chunkNum={props.chunkNum} deleteUserNote={props.deleteUserNote} />
+            );
           })}
         </span>
 
         <div className={styles.noteInputContainer}>
           <input className={styles.userNoteInput} value={userNoteText} onChange={(e) => setUserNoteText(e.target.value)} placeholder="add a note..." />
-          <button className={styles.enterButton} type="button" onClick={() => props.addUserNote(userNoteText, props.chunkNum, successCallback, errorCallback)}>Enter</button>
+          <button className={styles.enterButton} type="button" onClick={() => props.addUserNote(userNoteText, props.chunkNum, successAddCallback, errorAddCallback)}>Enter</button>
         </div>
         {giveSummaryStatus(props)}
       </Box>
