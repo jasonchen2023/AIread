@@ -1,11 +1,37 @@
 @use '../../utils/colors' as c;
 
-#container{
+#container {
   margin: 50px;
 }
 
 .container {
-	background-color: c.$aiComponentBlue;
+  background-color: c.$aiComponentBlue;
+}
+
+.noteInputContainer {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+}
+
+.userNoteInput {
+  height: 100%;
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px 0 0 10px;
+  background-color: c.$aiComponentBlue;
+}
+
+.userTextMarkdown {
+  color: red;
+}
+
+.enterButton {
+  background-color: #D53F8C;
+  color: white;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 0 10px 10px 0;
 }
 
 #pdfDisplay {
