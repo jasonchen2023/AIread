@@ -4,12 +4,13 @@
 	margin-left: auto;
 	margin-right: auto;
 	padding: 32px;
-	border-radius: 12px;
+	border-radius: 5px;
 	border-style: solid;
 	margin-top: 24px;
 	margin-bottom: 12px;
 	display: flex;
 	flex-direction: column;
+	box-shadow: 1px 1px rgba($color: #000000, $alpha: 0.2);
 }
 
 .inputWrapper {

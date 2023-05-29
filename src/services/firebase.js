@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword } from 'firebase/auth';
-import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, updateDoc, arrayUnion, deleteDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, updateDoc, arrayUnion, deleteDoc, runTransaction } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import axios from 'axios';
 import { ActionTypes } from '../actions';
@@ -242,6 +242,25 @@ export function deleteFile(id, title) {
     console.log('Document deleted successfully from storage');
   }).catch((error) => {
     console.error('Error deleting document from storage:', error);
+  });
+}
+
+export function pushUserNote(readingId, note, chunkNum, successCallback, errorCallback) {
+  const noteRef = doc(collection(db, `Users/${auth.currentUser.uid}/readings`), `${readingId}`);
+  return runTransaction(db, (t) => {
+    return t.get(noteRef).then((readingDoc) => {
+      if (!readingDoc.exists) return;
+      const chunkInfo = readingDoc.get('chunks');
+      if (chunkInfo[chunkNum].userNotes) {
+        chunkInfo[chunkNum].userNotes.push(note);
+      } else {
+        chunkInfo[chunkNum].userNotes = [note];
+      }
+      t.set(noteRef, { chunks: chunkInfo }, { merge: true });
+    })
+      .then(() => successCallback());
+  }).catch(() => {
+    errorCallback();
   });
 }
 

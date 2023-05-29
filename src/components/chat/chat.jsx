@@ -35,7 +35,7 @@ export default function chat() {
 
         <Button
           isLoading={isLoading}
-          colorScheme="teal"
+          colorScheme="pink"
           ms={6}
           onClick={handleSubmit}
         >
@@ -43,7 +43,7 @@ export default function chat() {
         </Button>
       </div>
       {response.length > 0 && (
-      <p className={style.responseText}>{response}</p>
+        <p className={style.responseText}>{response}</p>
       )}
     </div>
   );
