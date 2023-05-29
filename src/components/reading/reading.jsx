@@ -8,7 +8,6 @@ import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
 import style from './styles.module.scss';
 import { getFile, makeSummaries, pushUserNote, removeUserNote, auth } from '../../services/firebase';
-import { getFile, makeSummaries, auth, pushUserNote } from '../../services/firebase';
 import Chat from '../chat/chat';
 
 import './reading.module.scss';
