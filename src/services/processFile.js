@@ -21,7 +21,7 @@ export async function convertPDFtoText(url) {
 }
 
 // from chatGPT
-export function chunkify(rawContent, wordsPerChunk = 500) {
+export function chunkify(rawContent, wordsPerChunk = 300) {
   // Split the raw content into paragraphs using newlines
   const paragraphs = rawContent.split('\n');
 
