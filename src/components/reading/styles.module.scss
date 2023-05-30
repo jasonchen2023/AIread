@@ -46,3 +46,29 @@
   justify-content: space-between;
   align-items: center;
 }
+
+#chatIcon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 40px;
+  height: 40px;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+  border-radius: 3px;
+}
+
+#chatIcon:hover {
+ cursor: pointer;
+ width: 45px;
+ height: 45px;
+}
+
+#chatDiv {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 400px;
+  height: 480px;
+  z-index: 9999;
+}
