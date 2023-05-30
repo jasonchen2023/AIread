@@ -17,11 +17,22 @@ function ReadingHeader(props) {
   const selectedFile = useSelector((state) => state.files.selectedFile);
   const pdfView = useSelector((state) => state.files.showPDF);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onGenerateClick = async () => {
     try {
+      setIsLoading(true);
       const token = await auth.currentUser.getIdToken();
-      makeSummaries(selectedFile.id, selectedFile.chunks, token);
+      makeSummaries(selectedFile.id, selectedFile.chunks, token)
+        .then(() => {
+          toast.success('Summaries generated!');
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error('Error generating summaries');
+          setIsLoading(false);
+        });
     } catch (err) {
       console.log(`error: ${err}`);
     }
@@ -42,13 +53,17 @@ function ReadingHeader(props) {
         style={{ borderRadius: '5px' }}
         boxShadow="base"
       >
-        <Heading size="m">Your Document:</Heading>
-        <Heading size="sm">{selectedFile.title}</Heading>
-        {pdfView ? (
-          <Button onClick={() => dispatch(showPDF(false))}>Hide PDF</Button>
-        ) : (
-          <Button onClick={() => dispatch(showPDF(true))}>Show PDF</Button>
-        )}
+        <Flex justifyContent="space-between" alignItems="center" width="100%">
+          <Box>
+            <Heading size="m">Your Document:</Heading>
+            <Heading size="sm">{selectedFile.title}</Heading>
+          </Box>
+          {pdfView ? (
+            <Button onClick={() => dispatch(showPDF(false))}>Hide PDF</Button>
+          ) : (
+            <Button onClick={() => dispatch(showPDF(true))}>Show PDF</Button>
+          )}
+        </Flex>
       </Box>
 
       <Flex
@@ -64,7 +79,13 @@ function ReadingHeader(props) {
         boxShadow="base"
       >
         <Heading size="m">AI Summary</Heading>
-        <Button size="sm" colorScheme="pink" onClick={onGenerateClick}>{props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}</Button>
+        <Button
+          isLoading={isLoading}
+          colorScheme="pink"
+          onClick={onGenerateClick}
+        >
+          {props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}
+        </Button>
       </Flex>
       <Divider />
     </Flex>

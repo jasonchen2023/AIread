@@ -10,8 +10,8 @@ export default function AIreadTitle(props) {
       <h1>
         <span className={styles.ai}>AI</span>read
       </h1>
-      <p>An Interactive Learning Environment</p>
-      <FontAwesomeIcon icon={faChevronDown} bounce size="2xl" />
+      <p>An AI-Augmented Reading Environment</p>
+      <FontAwesomeIcon className={styles.chevronIcon} icon={faChevronDown} bounce size="2xl" />
     </div>
   );
 }
