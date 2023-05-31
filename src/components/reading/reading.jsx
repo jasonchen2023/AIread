@@ -12,7 +12,7 @@ import Chat from '../chat/chat';
 
 import './reading.module.scss';
 import { showPDF } from '../../actions';
-import chatIcon from '../../img/chat.jpg';
+import chatIcon from '../../img/chat.png';
 import closeIcon from '../../img/close-button.png'; // from https://www.flaticon.com/free-icon/close-button_106830
 
 function ReadingHeader(props) {
@@ -89,7 +89,6 @@ function ReadingHeader(props) {
           {props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}
         </Button>
       </Flex>
-      <Divider />
     </Flex>
   );
 }
@@ -99,6 +98,17 @@ function Reading(props) {
   const selectedFile = useSelector((state) => state.files.selectedFile);
   const pdfView = useSelector((state) => state.files.showPDF);
   const [isChatVisible, setIsChatVisible] = useState(false);
+
+  // for font changing
+  // Arial, Georgia, Courier New, Default ('')
+  const [fontStyleContent, setFontStyleContent] = useState('');
+  const handleFontChangeContent = (font) => {
+    setFontStyleContent(font);
+  };
+  const [fontStyleSummary, setFontStyleSummary] = useState('');
+  const handleFontChangeSummary = (font) => {
+    setFontStyleSummary(font);
+  };
 
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -129,13 +139,23 @@ function Reading(props) {
     console.log(pdfView);
   }, [pdfView]);
 
-  const renderChunks = () => {
+  // eslint-disable-next-line no-shadow
+  const renderChunks = (fontStyleContent, fontStyleSummary) => {
     if (isSelectedFileLoaded) {
       return selectedFile.chunks?.map((chunk, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={index}>
-          <ReadingEntry chunkNum={index} content={chunk.content} summary={chunk.summary} userNotes={chunk.userNotes} summary_upToDate addUserNote={addUserNote} deleteUserNote={deleteUserNote} />
-          <Divider />
+          <ReadingEntry
+            chunkNum={index}
+            content={chunk.content}
+            summary={chunk.summary}
+            userNotes={chunk.userNotes}
+            summary_upToDate
+            addUserNote={addUserNote}
+            deleteUserNote={deleteUserNote}
+            fontStyleContent={fontStyleContent}
+            fontStyleSummary={fontStyleSummary}
+          />
         </div>
       ));
     } else {
@@ -151,18 +171,38 @@ function Reading(props) {
     <div className="reading-window">
       <Box minHeight="100vh" display="flex" flexDir="column">
         <Container maxWidth="none" flex={1}>
+          {/* chat component */}
           {/* <Chat /> */}
+          {/* header component (titles, generate summary button, etc.) */}
           <ReadingHeader />
+          <Flex mb={6}>
+            {/* font buttons for content (left) */}
+            <Box mt={2} width="50%">
+              <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeContent('')}>T</Button>
+              <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeContent('Arial')} style={{ fontFamily: 'Arial' }}>T</Button>
+              <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeContent('Georgia')} style={{ fontFamily: 'Georgia' }}>T</Button>
+              <Button background="white" mr={1} size="sm" fontSize="2xl" onClick={() => handleFontChangeContent('Courier New')} style={{ fontFamily: 'Courier New' }}>T</Button>
+            </Box>
+            {/* font buttons for summary (right) */}
+            <Box mt={2}>
+              <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeSummary('')}>T</Button>
+              <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeSummary('Arial')} style={{ fontFamily: 'Arial' }}>T</Button>
+              <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeSummary('Georgia')} style={{ fontFamily: 'Georgia' }}>T</Button>
+              <Button background="white" mr={1} size="sm" fontSize="2xl" onClick={() => handleFontChangeSummary('Courier New')} style={{ fontFamily: 'Courier New' }}>T</Button>
+            </Box>
+          </Flex>
+          {/* pdf display */}
           {pdfView && (
             <div id={style.pdfDisplay}>
               <embed src={selectedFile.url} width="70%" height="1000" type="application/pdf" />
             </div>
           )}
-          {renderChunks()}
+          {/* reading chunks */}
+          {renderChunks(fontStyleContent, fontStyleSummary)}
           {!isChatVisible ? (
             <img id={style.chatIcon} className={style.iconBorder} alt="chat icon" src={chatIcon} onClick={toggleChatBox} />
           ) : (
-            <img id={style.chatIcon} alt="close icon" src={closeIcon} onClick={toggleChatBox} />
+            <img id={style.closeIcon} alt="close icon" src={closeIcon} onClick={toggleChatBox} />
           )}
           {isChatVisible && <div id={style.chatDiv}><Chat /></div>}
         </Container>
@@ -177,6 +217,7 @@ export default function ReadingWrapper() {
       className={style.container}
     >
       <Nav />
+      {/* wrapping with Chakra, stan used for frontend in this section */}
       <ChakraProvider>
         <Reading />
       </ChakraProvider>

@@ -2,11 +2,11 @@
 
 .container {
 	background-color: white;
-	width: 95%;
-	height: 440px;
+	width: 100%;
+	height: 100%;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 32px;
+	padding: 16px;
 	border-radius: 5px;
 	border-style: solid;
 	margin-top: 24px;
@@ -26,12 +26,13 @@
 	margin-bottom: 0;
 	height: 300px;
   overflow-y: auto;
-	background-color: rgb(233, 231, 231);
-	padding: 8px;
+	background-color: rgb(250, 250, 250);
+	padding: 8px;	
 	border-radius: 5px;
 }
 
 .headerText {
 	margin-top: 0;
 	margin-bottom: 16px;
+	font-weight: bold;
 }

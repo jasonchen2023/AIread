@@ -1,5 +1,9 @@
 @use '../../utils/colors' as c;
 
+.userNoteInput::placeholder {
+  font-style: italic;
+}
+
 #container {
   margin: 50px;
 }
@@ -12,25 +16,29 @@
   display: flex;
   flex-direction: row;
   width: 80%;
+  margin-top: 8px;
 }
 
 .userNoteInput {
   height: 100%;
   flex: 1;
-  padding: 10px;
+  padding: 6px;
   border-radius: 5px 0 0 5px;
   border: 2px solid #E3E8EF;
 }
 
 .userTextMarkdown {
-  color: red;
+  color: maroon;
+  p {
+    margin-bottom: 0;
+  }
 }
 
 .enterButton {
   background-color: #D53F8C;
   color: white;
   font-weight: 700;
-  padding: 10px;
+  padding: 6px;
   border-radius: 0 5px 5px 0;
 }
 
@@ -45,34 +53,50 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 4px 0px;
 }
 
 #chatIcon {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+  border-radius: 16px;
+  background-color: #11b990;
+  padding: 8px;
+}
+
+#chatIcon:hover {
+ cursor: pointer;
+ width: 65px;
+ height: 65px;
+}
+
+#closeIcon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
   z-index: 9999;
   transition: opacity 0.3s ease;
   border-radius: 3px;
 }
 
-.iconBorder {
-  border: 2px solid lightgray;
-}
-
-#chatIcon:hover {
-  cursor: pointer;
-  width: 45px;
-  height: 45px;
+#closeIcon:hover {
+ cursor: pointer;
+ width: 65px;
+ height: 65px;
 }
 
 #chatDiv {
   position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 400px;
-  height: 480px;
+  bottom: 130px;
+  right: 30px;
+  width: 800px;
+  height: 250px;
   z-index: 9999;
 }

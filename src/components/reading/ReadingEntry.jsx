@@ -56,13 +56,14 @@ function ReadingEntry(props) {
       justifyContent="center"
       alignItems="stretch"
       columnGap={1}
+      mb={4}
     >
       <Box
         flex="1"
         bg="white"
         p={2}
         minH="100%"
-        style={{ borderRadius: '5px' }}
+        style={{ borderRadius: '5px', fontFamily: props.fontStyleContent }}
         boxShadow="base"
       >
         <ReactMarkdown components={ChakraUIRenderer()} children={props.content} skipHtml />
@@ -72,11 +73,13 @@ function ReadingEntry(props) {
         bg="white"
         p={2}
         minH="100%"
-        style={{ borderRadius: '5px' }}
         boxShadow="base"
         position="relative"
+        style={{ borderRadius: '5px' }}
       >
-        <ReactMarkdown components={ChakraUIRenderer()} children={props.summary} skipHtml />
+        <Box style={{ fontFamily: props.fontStyleSummary }}>
+          <ReactMarkdown components={ChakraUIRenderer()} children={props.summary} skipHtml />
+        </Box>
         <span className={styles.userTextMarkdown}>
           {props.userNotes && props.userNotes.map((userNote, index) => {
             return (
@@ -86,8 +89,19 @@ function ReadingEntry(props) {
         </span>
 
         <div className={styles.noteInputContainer}>
-          <input className={styles.userNoteInput} value={userNoteText} onChange={(e) => setUserNoteText(e.target.value)} placeholder="add a note..." />
-          <button className={styles.enterButton} type="button" onClick={() => props.addUserNote(userNoteText, props.chunkNum, successAddCallback, errorAddCallback)}>Enter</button>
+          <textarea
+            className={styles.userNoteInput}
+            value={userNoteText}
+            onChange={(e) => setUserNoteText(e.target.value)}
+            placeholder="add a note (Markdown supported!)"
+            rows={1}
+          />
+          <button
+            className={styles.enterButton}
+            type="button"
+            onClick={() => props.addUserNote(userNoteText, props.chunkNum, successAddCallback, errorAddCallback)}
+          >Enter
+          </button>
         </div>
         {giveSummaryStatus(props)}
       </Box>
