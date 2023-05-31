@@ -125,7 +125,6 @@ export function setNewPassword(newPassword, setResetPassword, successToast, fail
   }
   updatePassword(auth.currentUser, newPassword)
     .then(() => {
-      console.log('HERE');
       setResetPassword('');
       successToast();
     })

@@ -18,9 +18,9 @@ function FileList() {
       <ul>
         {allFiles.filter((file) => file.title.toLowerCase().includes(filterText.toLowerCase())).map((el, index) => {
           return (
-            <div className="fileRow">
+            <div className="fileRow" key={el.id}>
               <div id="readingSwatch" style={{ backgroundColor: el.color }} />
-              <div className="cardy" key={el.id}>
+              <div className="cardy">
                 <div className="fileTitle">
                   <NavLink to={`/reading/${el.id}`} rel="noopener noreferrer">
                     {el.title}
