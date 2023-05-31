@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, updatePassword } from 'firebase/auth';
-import { addDoc, collection, doc, getDoc, getFirestore, setDoc, getDocs, query, onSnapshot, updateDoc, arrayUnion, deleteDoc, runTransaction } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getFirestore, setDoc, query, onSnapshot, updateDoc, deleteDoc, runTransaction } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import axios from 'axios';
 import { ActionTypes } from '../actions';

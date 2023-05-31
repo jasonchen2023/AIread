@@ -2,9 +2,8 @@
 
 import React, { useRef, useState } from 'react';
 import './FileUpload.scss';
-import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { uploadFile, getAllFiles } from '../../services/firebase';
+import { uploadFile } from '../../services/firebase';
 import FileUploadModal from './fileUploadModal';
 
 function FileUpload() {

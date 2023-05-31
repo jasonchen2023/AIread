@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styles from './styles.module.scss';
 import { auth, logOut, setNewPassword, updateUserDoc,

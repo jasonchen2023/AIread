@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { fetchUserDoc, logOut, auth, getAllFiles } from '../../services/firebase';
-import * as Constants from '../../utils/constants';
+import { fetchUserDoc, getAllFiles } from '../../services/firebase';
 import FileUpload from './FileUpload';
 import FileList from './FileList';
 import styles from './styles.module.scss';
@@ -22,7 +19,7 @@ export default function Home(props) {
     <div id={styles.homeContainer}>
       <Nav />
       <div id={styles.welcome}>
-        Welcome Home, {user}
+        Welcome, {user} 👋
       </div>
       <div id={styles.fileUpload}>
         <FileUpload />

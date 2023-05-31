@@ -30,6 +30,7 @@ export default function chat() {
   return (
     <div className={style.container}>
       <p className={style.headerText}>Have a question? Ask GPT!</p>
+      <p className={style.warningText}>The model may occasionally provide false information</p>
       <div className={style.inputWrapper}>
         <Input
           placeholder="Who was Mark Twain?"

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.scss';
 

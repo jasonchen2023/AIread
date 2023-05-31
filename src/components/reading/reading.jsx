@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChakraProvider, Flex, Button, Box, Container, Divider, Heading } from '@chakra-ui/react';
+import { ChakraProvider, Flex, Button, Box, Container, Heading } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import ReadingEntry from './ReadingEntry';
 import Nav from '../nav/nav';
