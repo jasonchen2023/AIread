@@ -83,7 +83,8 @@ function ReadingEntry(props) {
         <span className={styles.userTextMarkdown}>
           {props.userNotes && props.userNotes.map((userNote, index) => {
             return (
-              <UserNote userNote={userNote} index={index} chunkNum={props.chunkNum} deleteUserNote={props.deleteUserNote} />
+              // eslint-disable-next-line react/no-array-index-key
+              <UserNote key={index} userNote={userNote} index={index} chunkNum={props.chunkNum} deleteUserNote={props.deleteUserNote} />
             );
           })}
         </span>
