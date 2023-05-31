@@ -25,7 +25,6 @@ export function decrement() {
 }
 
 export function selectFile(fileName, fileUrl) {
-  console.log(fileName, fileUrl);
   return {
     type: ActionTypes.SELECT_FILE,
     payload: { name: fileName, url: fileUrl },

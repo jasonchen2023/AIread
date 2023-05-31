@@ -135,10 +135,6 @@ function Reading(props) {
     removeUserNote(id, userNoteIndex, chunkNum, successCallback, errorCallback);
   };
 
-  useEffect(() => {
-    console.log(pdfView);
-  }, [pdfView]);
-
   // eslint-disable-next-line no-shadow
   const renderChunks = (fontStyleContent, fontStyleSummary) => {
     if (isSelectedFileLoaded) {

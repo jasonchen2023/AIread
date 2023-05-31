@@ -2,9 +2,8 @@
 
 import React, { useRef, useState } from 'react';
 import './FileUpload.scss';
-import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { uploadFile, getAllFiles } from '../../services/firebase';
+import { uploadFile } from '../../services/firebase';
 import FileUploadModal from './fileUploadModal';
 
 function FileUpload() {
@@ -50,10 +49,6 @@ function FileUpload() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    // if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-    //   viewFile(e.dataTransfer.files[0]);
-    // }
-    console.log(e);
     handleDropFile(e);
   };
 
@@ -80,7 +75,7 @@ function FileUpload() {
     <div id="fileUploadContainer">
       <FileUploadModal selectedFile={selectedFile} processFileUpload={processFileUpload} processFileCancel={processFileCancel} />
       <form id="form-file-upload" onDragEnter={handleDrag} onSubmit={(e) => e.preventDefault()}>
-        <input ref={inputRef} type="file" id="input-file-upload" webkitdirectory onChange={handleFileSelect} />
+        <input ref={inputRef} type="file" id="input-file-upload" onChange={handleFileSelect} />
         {/* eslint-disable-next-line */}
         <label id="label-file-upload" htmlFor="input-file-upload" className={dragActive ? 'drag-active' : ''}>
           <div>
