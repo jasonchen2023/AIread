@@ -1,6 +1,9 @@
+@use '../../utils/colors' as c;
+
 .container {
 	background-color: white;
-	width: 60%;
+	width: 95%;
+	height: 440px;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 32px;
@@ -10,7 +13,8 @@
 	margin-bottom: 12px;
 	display: flex;
 	flex-direction: column;
-	box-shadow: 1px 1px rgba($color: #000000, $alpha: 0.2);
+	box-shadow: 1px 1px 5px rgba($color: #000000, $alpha: 0.2);
+  border: 1px solid silver;
 }
 
 .inputWrapper {
@@ -20,6 +24,11 @@
 .responseText {
 	margin-top: 16px;
 	margin-bottom: 0;
+	height: 300px;
+  overflow-y: auto;
+	background-color: rgb(233, 231, 231);
+	padding: 8px;
+	border-radius: 5px;
 }
 
 .headerText {
