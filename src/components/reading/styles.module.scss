@@ -55,3 +55,48 @@
   align-items: center;
   padding: 4px 0px;
 }
+
+#chatIcon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+  border-radius: 16px;
+  background-color: #11b990;
+  padding: 8px;
+}
+
+#chatIcon:hover {
+ cursor: pointer;
+ width: 65px;
+ height: 65px;
+}
+
+#closeIcon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+  border-radius: 3px;
+}
+
+#closeIcon:hover {
+ cursor: pointer;
+ width: 65px;
+ height: 65px;
+}
+
+#chatDiv {
+  position: fixed;
+  bottom: 130px;
+  right: 30px;
+  width: 800px;
+  height: 250px;
+  z-index: 9999;
+}

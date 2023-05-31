@@ -12,6 +12,8 @@ import Chat from '../chat/chat';
 
 import './reading.module.scss';
 import { showPDF } from '../../actions';
+import chatIcon from '../../img/chat.png';
+import closeIcon from '../../img/close-button.png'; // from https://www.flaticon.com/free-icon/close-button_106830
 
 function ReadingHeader(props) {
   const selectedFile = useSelector((state) => state.files.selectedFile);
@@ -95,6 +97,7 @@ function Reading(props) {
   const [isSelectedFileLoaded, setIsSelectedFileLoaded] = useState(false);
   const selectedFile = useSelector((state) => state.files.selectedFile);
   const pdfView = useSelector((state) => state.files.showPDF);
+  const [isChatVisible, setIsChatVisible] = useState(false);
 
   // for font changing
   // Arial, Georgia, Courier New, Default ('')
@@ -160,12 +163,16 @@ function Reading(props) {
     }
   };
 
+  const toggleChatBox = () => {
+    setIsChatVisible(!isChatVisible);
+  };
+
   return (
     <div className="reading-window">
       <Box minHeight="100vh" display="flex" flexDir="column">
         <Container maxWidth="none" flex={1}>
           {/* chat component */}
-          <Chat />
+          {/* <Chat /> */}
           {/* header component (titles, generate summary button, etc.) */}
           <ReadingHeader />
           <Flex mb={6}>
@@ -192,6 +199,12 @@ function Reading(props) {
           )}
           {/* reading chunks */}
           {renderChunks(fontStyleContent, fontStyleSummary)}
+          {!isChatVisible ? (
+            <img id={style.chatIcon} alt="chat icon" src={chatIcon} onClick={toggleChatBox} />
+          ) : (
+            <img id={style.closeIcon} alt="close icon" src={closeIcon} onClick={toggleChatBox} />
+          )}
+          {isChatVisible && <div id={style.chatDiv}><Chat /></div>}
         </Container>
       </Box>
     </div>
