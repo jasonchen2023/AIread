@@ -200,7 +200,7 @@ function Reading(props) {
           {/* reading chunks */}
           {renderChunks(fontStyleContent, fontStyleSummary)}
           {!isChatVisible ? (
-            <img id={style.chatIcon} alt="chat icon" src={chatIcon} onClick={toggleChatBox} />
+            <img id={style.chatIcon} className={style.iconBorder} alt="chat icon" src={chatIcon} onClick={toggleChatBox} />
           ) : (
             <img id={style.closeIcon} alt="close icon" src={closeIcon} onClick={toggleChatBox} />
           )}
