@@ -69,7 +69,7 @@ export default function LoginSignup(props) {
         <h2>Signup</h2>
         <div className={styles.panelFields}>
           <input placeholder="Email" value={email} onChange={handleEmailChange} />
-          <input placeholder="Password" value={password} onChange={handlePasswordChange} />
+          <input placeholder="Password" type="password" value={password} onChange={handlePasswordChange} />
           <input placeholder="Display Name" value={displayName} onChange={handleDisplayNameChange} />
           <div className={styles.ageRow}>
             Age: <input type="number" value={age} onChange={handleAgeChange} />
