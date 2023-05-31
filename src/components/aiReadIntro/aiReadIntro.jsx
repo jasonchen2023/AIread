@@ -18,7 +18,7 @@ export default function AIreadIntro(props) {
               AIread is a web application and learning and note-taking platform that allows users to more effectively and efficiently absorb information from handouts and assigned readings.
             </p>
             <p>
-              When a user uploads readings to the platform, they can receive and save summaries and explanations of the texts (with varying complexities).
+              When a user uploads readings to the platform, they can receive and save summaries and explanations of the texts.
             </p>
             <p>
               Original texts and their summaries are viewed side by side, helping users break down the structure of the readings and the significance of each section,
