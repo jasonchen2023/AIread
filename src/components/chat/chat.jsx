@@ -29,12 +29,13 @@ export default function chat() {
 
   return (
     <div className={style.container}>
-      <p className={style.headerText}>Have a question? Ask here!</p>
+      <p className={style.headerText}>Have a question? Ask GPT!</p>
       <div className={style.inputWrapper}>
         <Input
-          placeholder="i.e. Who was Mark Twain?"
+          placeholder="Who was Mark Twain?"
           value={prompt}
           onChange={(e) => { setPrompt(e.target.value); }}
+          sx={{ '::placeholder': { fontStyle: 'italic' } }}
         />
 
         <Button

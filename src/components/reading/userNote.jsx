@@ -20,10 +20,15 @@ function UserNote(props) {
   };
 
   return (
-    <div className={styles.userNoteContainer} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+    <div
+      className={styles.userNoteContainer}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+      style={isHover ? { backgroundColor: '#F3F3F3', borderRadius: '10px' } : { }}
+    >
       <ReactMarkdown components={ChakraUIRenderer()} children={props.userNote} skipHtml />
       <img
-        style={isHover ? { display: 'flex' } : { display: 'none' }}
+        style={isHover ? { display: 'flex', marginRight: '6px', alignSelf: 'flex-start' } : { display: 'none' }}
         className="trash"
         alt="Delete"
         src={trash}
