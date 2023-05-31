@@ -29,6 +29,7 @@
 
 .userTextMarkdown {
   color: maroon;
+
   p {
     margin-bottom: 0;
   }
@@ -65,14 +66,14 @@
   z-index: 9999;
   transition: opacity 0.3s ease;
   border-radius: 16px;
-  background-color: #11b990;
+  background-color: c.$aiOrange;
   padding: 8px;
 }
 
 #chatIcon:hover {
- cursor: pointer;
- width: 65px;
- height: 65px;
+  cursor: pointer;
+  width: 65px;
+  height: 65px;
 }
 
 #closeIcon {
@@ -87,9 +88,9 @@
 }
 
 #closeIcon:hover {
- cursor: pointer;
- width: 65px;
- height: 65px;
+  cursor: pointer;
+  width: 65px;
+  height: 65px;
 }
 
 #chatDiv {
