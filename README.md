@@ -15,7 +15,7 @@ We are using Firebase Storage to store uploaded PDFs and Cloud Firestore to stor
 
 ## Setup
 
-To run the app locally, `npm install` and then `npm run dev`
+To run the app locally, first retrieve the contents of the `.env` file pinned in the CS52 airead slack channel and paste them into a `.env` file at the root-level directory of the project. Then, run `npm install` and then `npm run dev`
 
 ## Deployment
 
