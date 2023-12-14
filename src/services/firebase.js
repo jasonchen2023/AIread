@@ -4,24 +4,26 @@ import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, up
 import { addDoc, collection, doc, getDoc, getFirestore, setDoc, query, onSnapshot, updateDoc, deleteDoc, runTransaction } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import axios from 'axios';
+import { getAnalytics } from 'firebase/analytics';
 import { ActionTypes } from '../actions';
 import { convertPDFtoText, chunkify } from './processFile';
-import { BASE_URL } from '../utils/constants';
+import { ANOTHER_CONSTANT, BASE_URL } from '../utils/constants';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyBjQFRMKpSsfef5jb89PjIe7yDDCXEp31s',
-  authDomain: 'airead.firebaseapp.com',
-  projectId: 'airead',
-  storageBucket: 'airead.appspot.com',
-  messagingSenderId: '1064959847191',
-  appId: '1:1064959847191:web:0b6e632e679ebd9af46552',
-  measurementId: 'G-SNL9THW1S2',
+  apiKey: 'AIzaSyAl9i0xE27g1w6QzB09KlnSMuO-_6ysQcM',
+  authDomain: 'airead-b7e21.firebaseapp.com',
+  projectId: 'airead-b7e21',
+  storageBucket: 'airead-b7e21.appspot.com',
+  messagingSenderId: '869737867265',
+  appId: '1:869737867265:web:54c167f7980ace68d7b800',
+  measurementId: 'G-9NC2J1E8X3',
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 const db = getFirestore(app);
 export const auth = getAuth(app);
 
@@ -286,7 +288,7 @@ export async function makeSummaries(fileID, chunkList, token) {
   const contentArray = chunkList.map((chunk) => chunk.content);
   console.log(contentArray);
 
-  const res = await axios.post(`${BASE_URL}/summaries`, {
+  const res = await axios.post(`${ANOTHER_CONSTANT}/summaries`, {
     summaryType: 'document',
     content: contentArray,
   }, { headers: { Authorization: token } });
