@@ -12,36 +12,13 @@
   background-color: c.$aiComponentBlue;
 }
 
-.noteInputContainer {
-  display: flex;
-  flex-direction: row;
-  width: 80%;
-  margin-top: 8px;
-}
-
-.userNoteInput {
-  height: 100%;
-  flex: 1;
-  padding: 6px;
-  border-radius: 5px 0 0 5px;
-  border: 2px solid #E3E8EF;
-}
-
-.userTextMarkdown {
-  color: #d53f8c;
-
-  p {
-    margin-bottom: 0;
-  }
-}
-
-.enterButton {
-  background-color: #D53F8C;
-  color: white;
-  font-weight: 700;
-  padding: 6px;
-  border-radius: 0 5px 5px 0;
-}
+// .enterButton {
+//   background-color: #D53F8C;
+//   color: white;
+//   font-weight: 700;
+//   padding: 6px;
+//   border-radius: 0 5px 5px 0;
+// }
 
 #pdfDisplay {
   display: flex;

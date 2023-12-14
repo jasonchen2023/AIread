@@ -24,7 +24,6 @@ export default function Home(props) {
       <div id={styles.fileUpload}>
         <FileUpload />
       </div>
-
       <div id={styles.fileList}>
         <FileList />
       </div>

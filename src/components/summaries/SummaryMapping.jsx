@@ -7,7 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import { toast } from 'react-toastify';
 import styles from './styles.module.scss';
-import UserNote from './userNote';
+import UserNote from '../notes/userNote';
 
 function giveSummaryStatus(props) {
   let colorScheme = '';
@@ -39,7 +39,7 @@ function giveSummaryStatus(props) {
   );
 }
 
-function ReadingEntry(props) {
+function SummaryMapping(props) {
   const [userNoteText, setUserNoteText] = useState('');
 
   const successAddCallback = () => {
@@ -111,4 +111,4 @@ function ReadingEntry(props) {
   );
 }
 
-export default ReadingEntry;
+export default SummaryMapping;
