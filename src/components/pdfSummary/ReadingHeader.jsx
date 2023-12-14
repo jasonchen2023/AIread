@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Flex, Button, Box, Heading } from '@chakra-ui/react';
+import { Flex, Button, Box, Heading, Input, Text } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import { makeSummaries, auth } from '../../services/firebase';
 
@@ -13,6 +13,7 @@ function ReadingHeader(props) {
   const pdfView = useSelector((state) => state.files.showPDF);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [customPrompt, setCustomPrompt] = useState('');
 
   const onGenerateClick = async () => {
     try {
@@ -33,6 +34,14 @@ function ReadingHeader(props) {
     }
   };
 
+  const onGoClick = () => {
+    // Handle custom prompt logic here
+    console.log('Custom Prompt:', customPrompt);
+
+    // Reset state after handling custom prompt
+    setCustomPrompt('');
+  };
+
   return (
     <Flex
       wrap="wrap"
@@ -50,8 +59,8 @@ function ReadingHeader(props) {
       >
         <Flex justifyContent="space-between" alignItems="center" width="100%">
           <Box>
-            <Heading size="m">Your Document:</Heading>
-            <Heading size="sm">{selectedFile.title}</Heading>
+            {/* <Heading size="m">Your Document:</Heading> */}
+            <Heading size="m">{selectedFile.title}</Heading>
           </Box>
           {pdfView ? (
             <Button onClick={() => dispatch(showPDF(false))}>Hide PDF</Button>
@@ -62,7 +71,7 @@ function ReadingHeader(props) {
       </Box>
 
       <Flex
-        justifyContent="space-between"
+        justifyContent="space-around"
         alignItems="center"
         width="50%"
         bg="white"
@@ -73,13 +82,35 @@ function ReadingHeader(props) {
         borderRadius="l"
         boxShadow="base"
       >
-        <Heading size="m">AI Summary</Heading>
+        <Box flex="1">
+          {/* Added margin to the right of the Input */}
+          <Input
+            type="text"
+            value={customPrompt}
+            onChange={(e) => setCustomPrompt(e.target.value)}
+            flex="1"
+            placeholder="Enter custom prompt here..."
+            mr={4}
+          />
+        </Box>
         <Button
           isLoading={isLoading}
           colorScheme="pink"
-          onClick={onGenerateClick}
+          onClick={onGoClick}
+          style={{ marginRight: '10px' }}
         >
-          {props.summaryExists ? 'Regenerate Summary' : 'Generate Summary'}
+          Go
+        </Button>
+        <Text fontSize="xl" ml="4" fontWeight="bold" alignSelf="center" style={{ margin: '0px' }}>
+          OR
+        </Text>
+        <Button
+          isLoading={isLoading}
+          colorScheme="yellow"
+          onClick={onGenerateClick}
+          style={{ marginLeft: '10px' }}
+        >
+          {props.summaryExists ? 'Regenerate Summary' : 'Standard Summary'}
         </Button>
       </Flex>
     </Flex>

@@ -93,19 +93,19 @@ function PdfSummaryPage(props) {
           <ReadingHeader />
           <Flex mb={6}>
             {/* font buttons for content (left) */}
-            <Box mt={2} width="50%">
+            {/* <Box mt={2} width="50%">
               <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeContent('')}>T</Button>
               <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeContent('Arial')} style={{ fontFamily: 'Arial' }}>T</Button>
               <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeContent('Georgia')} style={{ fontFamily: 'Georgia' }}>T</Button>
               <Button background="white" mr={1} size="sm" fontSize="2xl" onClick={() => handleFontChangeContent('Courier New')} style={{ fontFamily: 'Courier New' }}>T</Button>
-            </Box>
+            </Box> */}
             {/* font buttons for summary (right) */}
-            <Box mt={2}>
+            {/* <Box mt={2}>
               <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeSummary('')}>T</Button>
               <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeSummary('Arial')} style={{ fontFamily: 'Arial' }}>T</Button>
               <Button background="white" mr={1} size="sm" fontSize="xl" onClick={() => handleFontChangeSummary('Georgia')} style={{ fontFamily: 'Georgia' }}>T</Button>
               <Button background="white" mr={1} size="sm" fontSize="2xl" onClick={() => handleFontChangeSummary('Courier New')} style={{ fontFamily: 'Courier New' }}>T</Button>
-            </Box>
+            </Box> */}
           </Flex>
           {/* pdf display */}
           {pdfView && (
