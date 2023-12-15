@@ -34,10 +34,21 @@ function ReadingHeader(props) {
     }
   };
 
-  const onGoClick = () => {
+  const onGoClick = async () => {
     // Handle custom prompt logic here
     console.log('Custom Prompt:', customPrompt);
-
+    setIsLoading(true);
+    const token = await auth.currentUser.getIdToken();
+    makeSummaries(selectedFile.id, selectedFile.chunks, token, customPrompt)
+      .then(() => {
+        toast.success('Summaries generated!');
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error('Error generating summaries');
+        setIsLoading(false);
+      });
     // Reset state after handling custom prompt
     setCustomPrompt('');
   };
@@ -83,7 +94,6 @@ function ReadingHeader(props) {
         boxShadow="base"
       >
         <Box flex="1">
-          {/* Added margin to the right of the Input */}
           <Input
             type="text"
             value={customPrompt}

@@ -284,13 +284,14 @@ export function removeUserNote(readingId, userNoteIndex, chunkNum, successCallba
 
 // OPENAI SUMMARY PROCESSING
 // =========================================================================================================
-export async function makeSummaries(fileID, chunkList, token) {
+export async function makeSummaries(fileID, chunkList, token, customPrompt = null) {
   const contentArray = chunkList.map((chunk) => chunk.content);
   console.log(contentArray);
 
   const res = await axios.post(`${ANOTHER_CONSTANT}/summaries`, {
     summaryType: 'document',
     content: contentArray,
+    prompt: customPrompt,
   }, { headers: { Authorization: token } });
   const summaryArray = res.data.map((chunk) => chunk[1]);
   console.log(`array: ${summaryArray}`);
