@@ -56,13 +56,17 @@ function FileUpload() {
     inputRef.current.click();
   };
 
+  const failureToast = (err) => {
+    toast(err);
+  };
+
   const processFileUpload = (newFile, title, color) => {
     const file = newFile;
     if (file === null) {
       // eslint-disable-next-line
       toast('No File Selected');
     } else {
-      uploadFile(file, title, color);
+      uploadFile(file, title, color, failureToast);
       setSelectedFile(null);
     }
   };

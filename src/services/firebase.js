@@ -7,7 +7,7 @@ import axios from 'axios';
 import { getAnalytics } from 'firebase/analytics';
 import { ActionTypes } from '../actions';
 import { convertPDFtoText, chunkify } from './processFile';
-import { ANOTHER_CONSTANT, BASE_URL } from '../utils/constants';
+import { ANOTHER_CONSTANT, BASE_URL, wordLimit } from '../utils/constants';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -148,7 +148,7 @@ export function logOut(navigate) {
 // =========================================================================================================
 
 // uploads a file to firebase storage, adds a document to firestore, runs pdf to text
-export function uploadFile(file, title, color) {
+export function uploadFile(file, title, color, failureToast) {
   const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
   uploadBytes(storageRef, file)
     .then(() => {
@@ -159,6 +159,11 @@ export function uploadFile(file, title, color) {
           try {
             // process PDF to text
             const rawContent = await convertPDFtoText(url);
+
+            const wordList = rawContent.split(' ');
+            if (wordList.length > wordLimit) {
+              throw new Error(`Max word limit of ${wordLimit} exceeded. Please upload a smaller file.`);
+            }
 
             // process text to chunks
             const chunks = chunkify(rawContent);
@@ -174,12 +179,14 @@ export function uploadFile(file, title, color) {
             });
           } catch (err) {
             console.log(`error: ${err}`);
+            failureToast(err.message);
           }
         });
     })
 
     .catch((error) => {
       console.error('Error uploading file:', error);
+      failureToast(error.message);
       throw error;
     });
 }
