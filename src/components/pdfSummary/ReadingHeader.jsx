@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Flex, Button, Box, Heading, Input, Text } from '@chakra-ui/react';
+import { Flex, Button, Box, Heading, Input, Text, useMediaQuery } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import { makeSummaries, auth } from '../../services/firebase';
 
@@ -14,6 +14,7 @@ function ReadingHeader(props) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [customPrompt, setCustomPrompt] = useState('');
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const onGenerateClick = async () => {
     try {
@@ -55,6 +56,7 @@ function ReadingHeader(props) {
 
   return (
     <Flex
+      direction={isMobile ? 'column' : 'row'}
       wrap="wrap"
       justifyContent="center"
       columnGap={1}
@@ -84,7 +86,9 @@ function ReadingHeader(props) {
       <Flex
         justifyContent="space-around"
         alignItems="center"
-        width="50%"
+        // width="50%"
+        flex="1"
+        direction={isMobile ? 'column' : 'row'}
         bg="white"
         p={2}
         minH="100%"
@@ -93,7 +97,7 @@ function ReadingHeader(props) {
         borderRadius="l"
         boxShadow="base"
       >
-        <Box flex="1">
+        <Box flex="1" display="flex">
           <Input
             type="text"
             value={customPrompt}
@@ -102,15 +106,15 @@ function ReadingHeader(props) {
             placeholder="Enter custom prompt here..."
             mr={4}
           />
+          <Button
+            isLoading={isLoading}
+            colorScheme="pink"
+            onClick={onGoClick}
+            style={{ marginRight: '10px' }}
+          >
+            Go
+          </Button>
         </Box>
-        <Button
-          isLoading={isLoading}
-          colorScheme="pink"
-          onClick={onGoClick}
-          style={{ marginRight: '10px' }}
-        >
-          Go
-        </Button>
         <Text fontSize="xl" ml="4" fontWeight="bold" alignSelf="center" style={{ margin: '0px' }}>
           OR
         </Text>

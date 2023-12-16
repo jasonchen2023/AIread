@@ -1,11 +1,10 @@
 /* eslint-disable react/no-children-prop */
 /* eslint-disable new-cap */
 /* eslint-disable camelcase */
-import React, { useState } from 'react';
-import { Box, Flex, Badge } from '@chakra-ui/react';
+import React from 'react';
+import { Box, Flex, Badge, useMediaQuery } from '@chakra-ui/react';
 import ReactMarkdown from 'react-markdown';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
-import { toast } from 'react-toastify';
 import rehypeRaw from 'rehype-raw';
 import styles from './styles.module.scss';
 import Notes from '../notes/notes';
@@ -41,12 +40,15 @@ function giveSummaryStatus(props) {
 }
 
 function SummaryMapping(props) {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   function replaceWithBr(text) {
     return text.replace(/\r/g, '<br />').replace(/\n/g, '<br />').replace(/(<br \/>){3,}/g, '<br /><br />');
   }
 
   return (
     <Flex
+      direction={isMobile ? 'column' : 'row'}
       wrap="wrap"
       justifyContent="center"
       alignItems="stretch"
@@ -60,6 +62,7 @@ function SummaryMapping(props) {
         minH="100%"
         style={{ borderRadius: '5px', fontFamily: props.fontStyleContent }}
         boxShadow="base"
+        mb={isMobile ? 4 : 0}
       >
         <ReactMarkdown components={ChakraUIRenderer()} children={replaceWithBr(props.content)} rehypePlugins={[rehypeRaw]} />
       </Box>
@@ -78,7 +81,6 @@ function SummaryMapping(props) {
         <Notes chunkNum={props.chunkNum} text={props.userNote} />
         {giveSummaryStatus(props)}
       </Box>
-
     </Flex>
   );
 }
