@@ -6,8 +6,9 @@ import { Box, Flex, Badge } from '@chakra-ui/react';
 import ReactMarkdown from 'react-markdown';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import { toast } from 'react-toastify';
+import rehypeRaw from 'rehype-raw';
 import styles from './styles.module.scss';
-import UserNote from '../notes/userNote';
+import Notes from '../notes/notes';
 
 function giveSummaryStatus(props) {
   let colorScheme = '';
@@ -40,15 +41,9 @@ function giveSummaryStatus(props) {
 }
 
 function SummaryMapping(props) {
-  const [userNoteText, setUserNoteText] = useState('');
-
-  const successAddCallback = () => {
-    setUserNoteText('');
-  };
-
-  const errorAddCallback = () => {
-    toast('Unable to add note!');
-  };
+  function replaceWithBr(text) {
+    return text.replace(/\r/g, '<br />').replace(/\n/g, '<br />');
+  }
 
   return (
     <Flex
@@ -66,7 +61,7 @@ function SummaryMapping(props) {
         style={{ borderRadius: '5px', fontFamily: props.fontStyleContent }}
         boxShadow="base"
       >
-        <ReactMarkdown components={ChakraUIRenderer()} children={props.content} skipHtml />
+        <ReactMarkdown components={ChakraUIRenderer()} children={replaceWithBr(props.content)} rehypePlugins={[rehypeRaw]} />
       </Box>
       <Box
         flex="1"
@@ -80,30 +75,7 @@ function SummaryMapping(props) {
         <Box style={{ fontFamily: props.fontStyleSummary }}>
           <ReactMarkdown components={ChakraUIRenderer()} children={props.summary} skipHtml />
         </Box>
-        <span className={styles.userTextMarkdown}>
-          {props.userNotes && props.userNotes.map((userNote, index) => {
-            return (
-              // eslint-disable-next-line react/no-array-index-key
-              <UserNote key={index} userNote={userNote} index={index} chunkNum={props.chunkNum} deleteUserNote={props.deleteUserNote} />
-            );
-          })}
-        </span>
-
-        <div className={styles.noteInputContainer}>
-          <textarea
-            className={styles.userNoteInput}
-            value={userNoteText}
-            onChange={(e) => setUserNoteText(e.target.value)}
-            placeholder="add a note (Markdown supported!)"
-            rows={1}
-          />
-          <button
-            className={styles.enterButton}
-            type="button"
-            onClick={() => props.addUserNote(userNoteText, props.chunkNum, successAddCallback, errorAddCallback)}
-          >Enter
-          </button>
-        </div>
+        <Notes chunkNum={props.chunkNum} text={props.userNote} />
         {giveSummaryStatus(props)}
       </Box>
 

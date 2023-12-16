@@ -2,17 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChakraProvider, Flex, Button, Box, Container, Heading } from '@chakra-ui/react';
-import { toast } from 'react-toastify';
+import { ChakraProvider, Flex, Box, Container } from '@chakra-ui/react';
 import SummaryMapping from '../summaries/SummaryMapping';
 import Nav from '../nav/nav';
 import style from './styles.module.scss';
-import { getFile, makeSummaries, pushUserNote, removeUserNote, auth } from '../../services/firebase';
+import { getFile } from '../../services/firebase';
 import Chat from '../chat/chat';
 import ReadingHeader from './ReadingHeader';
 
 import './reading.module.scss';
-import { showPDF } from '../../actions';
 import chatIcon from '../../img/chat.png';
 import closeIcon from '../../img/close-button.png'; // from https://www.flaticon.com/free-icon/close-button_106830
 
@@ -41,22 +39,10 @@ function PdfSummaryPage(props) {
   }, []);
 
   useEffect(() => {
-    if (selectedFile) {
+    if (selectedFile && selectedFile.id === id) {
       setIsSelectedFileLoaded(true);
     }
   }, [selectedFile]);
-
-  const addUserNote = (noteText, chunkNum, successCallback, errorCallback) => {
-    if (noteText.trim().length === 0) {
-      toast('Please add text to your note');
-      return;
-    }
-    pushUserNote(id, noteText, chunkNum, successCallback, errorCallback);
-  };
-
-  const deleteUserNote = (userNoteIndex, chunkNum, successCallback, errorCallback) => {
-    removeUserNote(id, userNoteIndex, chunkNum, successCallback, errorCallback);
-  };
 
   // eslint-disable-next-line no-shadow
   const renderChunks = (fontStyleContent, fontStyleSummary) => {
@@ -70,8 +56,6 @@ function PdfSummaryPage(props) {
             summary={chunk.summary}
             userNotes={chunk.userNotes}
             summary_upToDate
-            addUserNote={addUserNote}
-            deleteUserNote={deleteUserNote}
             fontStyleContent={fontStyleContent}
             fontStyleSummary={fontStyleSummary}
           />

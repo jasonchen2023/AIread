@@ -253,17 +253,31 @@ export function pushUserNote(readingId, note, chunkNum, successCallback, errorCa
     return t.get(noteRef).then((readingDoc) => {
       if (!readingDoc.exists) return;
       const chunkInfo = readingDoc.get('chunks');
-      if (chunkInfo[chunkNum].userNotes) {
-        chunkInfo[chunkNum].userNotes.push(note);
-      } else {
-        chunkInfo[chunkNum].userNotes = [note];
-      }
+      chunkInfo[chunkNum].userNotes = note;
       t.set(noteRef, { chunks: chunkInfo }, { merge: true });
     })
       .then(() => successCallback());
   }).catch(() => {
     errorCallback();
   });
+}
+
+export function getUserNote(readingId, chunkNum, errorCallback) {
+  const noteRef = doc(collection(db, `Users/${auth.currentUser.uid}/readings`), `${readingId}`);
+  return getDoc(noteRef)
+    .then((readingDoc) => {
+      if (readingDoc.exists()) {
+        const chunkInfo = readingDoc.data().chunks;
+        console.log('chunkinfo:', chunkInfo);
+        return chunkInfo[chunkNum].userNotes;
+      } else {
+        return Promise.reject(new Error('Document does not exist.'));
+      }
+    })
+    .catch((error) => {
+      errorCallback();
+      return Promise.reject(error);
+    });
 }
 
 export function removeUserNote(readingId, userNoteIndex, chunkNum, successCallback, errorCallback) {
