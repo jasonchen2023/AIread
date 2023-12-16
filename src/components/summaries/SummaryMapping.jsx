@@ -42,7 +42,7 @@ function giveSummaryStatus(props) {
 
 function SummaryMapping(props) {
   function replaceWithBr(text) {
-    return text.replace(/\r/g, '<br />').replace(/\n/g, '<br />');
+    return text.replace(/\r/g, '<br />').replace(/\n/g, '<br />').replace(/(<br \/>){3,}/g, '<br /><br />');
   }
 
   return (
