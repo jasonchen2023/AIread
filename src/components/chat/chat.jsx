@@ -5,7 +5,7 @@ import style from './style.module.scss';
 import { processChat } from '../../services/chat';
 import { auth } from '../../services/firebase';
 
-export default function chat() {
+export default function chat(props) {
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState('');
@@ -13,10 +13,11 @@ export default function chat() {
   const handleSubmit = async () => {
     if (prompt) {
       console.log(`prompt: ${prompt}`);
+      console.log('content:', props.fileContent);
       setIsLoading(true);
       try {
         const token = await auth.currentUser.getIdToken();
-        const res = await processChat(prompt, token);
+        const res = await processChat(props.fileContent, prompt, token);
         setResponse(res.data);
       } catch (err) {
         console.log(`error: ${err}`);

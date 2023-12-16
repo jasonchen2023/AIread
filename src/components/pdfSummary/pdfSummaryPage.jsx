@@ -19,6 +19,7 @@ function PdfSummaryPage(props) {
   const selectedFile = useSelector((state) => state.files.selectedFile);
   const pdfView = useSelector((state) => state.files.showPDF);
   const [isChatVisible, setIsChatVisible] = useState(false);
+  const [pdfContent, setPdfContent] = useState('');
 
   // for font changing
   // Arial, Georgia, Courier New, Default ('')
@@ -38,9 +39,16 @@ function PdfSummaryPage(props) {
     dispatch(getFile(id));
   }, []);
 
+  function concatenateChunkContents(chunks) {
+    return chunks?.map((chunk) => chunk.content || '').join('');
+  }
+
   useEffect(() => {
     if (selectedFile && selectedFile.id === id) {
       setIsSelectedFileLoaded(true);
+
+      const fileContent = concatenateChunkContents(selectedFile.chunks);
+      setPdfContent(fileContent);
     }
   }, [selectedFile]);
 
@@ -104,7 +112,7 @@ function PdfSummaryPage(props) {
           ) : (
             <img id={style.closeIcon} alt="close icon" src={closeIcon} onClick={toggleChatBox} />
           )}
-          {isChatVisible && <div id={style.chatDiv}><Chat /></div>}
+          {isChatVisible && <div id={style.chatDiv}><Chat fileContent={pdfContent} /></div>}
         </Container>
       </Box>
     </div>
