@@ -3,7 +3,8 @@
 import React, { useRef, useState } from 'react';
 import './FileUpload.scss';
 import { toast } from 'react-toastify';
-import { uploadFile } from '../../services/firebase';
+import ConvertApi from 'convertapi-js';
+import { uploadFile, auth } from '../../services/firebase';
 import FileUploadModal from './fileUploadModal';
 
 function FileUpload() {
@@ -60,14 +61,16 @@ function FileUpload() {
     toast(err);
   };
 
-  const processFileUpload = (newFile, title, color) => {
+  const processFileUpload = async (newFile, title, color) => {
+    const token = await auth.currentUser.getIdToken();
     const file = newFile;
     if (file === null) {
       // eslint-disable-next-line
       toast('No File Selected');
     } else {
-      uploadFile(file, title, color, failureToast);
       setSelectedFile(null);
+      const fileId = await uploadFile(file, title, failureToast, color, token);
+      window.location.href = `/reading/${fileId}`;
     }
   };
 

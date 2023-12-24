@@ -1,11 +1,24 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
 import styles from './styles.module.scss';
 import background from '../../assets/background2.svg';
 import aiIntro from '../../assets/aiReadDemo.png';
+import SelectFileButton from '../selectFile/SelectFileButton';
+import { uploadFile } from '../../services/firebase';
 
 export default function AIreadIntro(props) {
+  const failureToast = (err) => {
+    toast(err);
+  };
+
+  const handleFileSelect = async (file) => {
+    const fileId = await uploadFile(file, file.name, failureToast);
+    console.log(file);
+    window.location.href = `/demo/${fileId}`;
+  };
+
   return (
     <div className={styles.page} style={{ backgroundImage: `url(${background}` }}>
       <div className={styles.titleImgRow}>
@@ -25,6 +38,7 @@ export default function AIreadIntro(props) {
               and users can add to the AI-generated summaries with their own notes and insights, resulting in an interactive AI-facilitated learning environment.
             </p>
           </div>
+          <SelectFileButton onFileSelect={handleFileSelect} />
         </div>
         <img alt="" src={aiIntro} />
       </div>

@@ -148,47 +148,51 @@ export function logOut(navigate) {
 // =========================================================================================================
 
 // uploads a file to firebase storage, adds a document to firestore, runs pdf to text
-export function uploadFile(file, title, color, failureToast) {
-  const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${file.name}`);
-  uploadBytes(storageRef, file)
-    .then(() => {
-      getDownloadURL(storageRef)
-        .then(async (url) => {
-          console.log(`adding reading doc in firestore (url: ${url})`);
+// export function uploadFile(file, title, color, failureToast) {
+export function uploadFile(file, title, failureToast, color = null, token = null) {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
+    try {
+      const storageRef = ref(getStorage(), auth.currentUser ? `${auth.currentUser.uid}/${file.name}` : `demo/${file.name}`);
+      await uploadBytes(storageRef, file);
 
-          try {
-            // process PDF to text
-            const rawContent = await convertPDFtoText(url);
+      const url = await getDownloadURL(storageRef);
+      console.log(`adding reading doc in firestore (url: ${url})`);
 
-            const wordList = rawContent.split(' ');
-            if (wordList.length > wordLimit) {
-              throw new Error(`Max word limit of ${wordLimit} exceeded. Please upload a smaller file.`);
-            }
+      // const rawContent = await convertPDFtoText(url);
 
-            // process text to chunks
-            const chunks = chunkify(rawContent);
+      const res = await axios.post(`${ANOTHER_CONSTANT}/text-extract`, { fileUrl: url }, { headers: { Authorization: token } });
+      const rawContent = res.data;
 
-            await addDoc(collection(db, `Users/${auth.currentUser.uid}/readings`), {
-              title,
-              color,
-              author: '',
-              topLevelSummary: '',
-              url,
-              rawContent,
-              chunks,
-            });
-          } catch (err) {
-            console.log(`error: ${err}`);
-            failureToast(err.message);
-          }
-        });
-    })
+      console.log(rawContent);
 
-    .catch((error) => {
+      const wordList = rawContent.split(' ');
+      if (wordList.length > wordLimit) {
+        throw new Error(`Max word limit of ${wordLimit} exceeded. Please upload a smaller file.`);
+      }
+
+      // process text to chunks
+      const chunks = chunkify(rawContent);
+
+      const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+
+      const docRef = await addDoc(collection(db, docPath), {
+        title,
+        color,
+        author: '',
+        topLevelSummary: '',
+        url,
+        rawContent,
+        chunks,
+      });
+
+      resolve(docRef.id);
+    } catch (error) {
       console.error('Error uploading file:', error);
       failureToast(error.message);
-      throw error;
-    });
+      reject(error);
+    }
+  });
 }
 
 // gets all files and listens for changes
@@ -218,7 +222,9 @@ export function getAllFiles() {
 export function getFile(id) {
   return (dispatch) => {
     try {
-      const q = query(doc(db, `Users/${auth.currentUser.uid}/readings`, id));
+      const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+      // const q = query(doc(db, `Users/${auth.currentUser.uid}/readings`, id));
+      const q = query(doc(db, docPath, id));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         dispatch({
           type: ActionTypes.SELECT_FILE,

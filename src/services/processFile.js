@@ -3,15 +3,12 @@ import axios from 'axios';
 
 export async function convertPDFtoText(url) {
   try {
-    console.log(`converting pdf with title: ${url}`);
-
     const formData = new FormData();
     formData.append('key', import.meta.env.VITE_PDFTOTEXT_API_KEY);
     formData.append('url', url);
     formData.append('text_layout', 1);
 
     const res = await axios.post('https://selectpdf.com/api2/pdftotext/', formData);
-    console.log('pdf converted successfully');
 
     return res.data.trim();
   } catch (err) {

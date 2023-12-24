@@ -29,7 +29,12 @@ export default function App(props) {
   if (!isAuthenticated) {
     return (
       <>
-        <Landing />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/demo/:id" element={<ReadingWrapper />} />
+          </Routes>
+        </BrowserRouter>
         <ToastContainer position="top-center" />
       </>
     );
