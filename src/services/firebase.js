@@ -6,7 +6,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'fire
 import axios from 'axios';
 import { getAnalytics } from 'firebase/analytics';
 import { ActionTypes } from '../actions';
-import { convertPDFtoText, chunkify } from './processFile';
+import { convertPDFtoText, chunkifyByParagraph } from './processFile';
 import { ANOTHER_CONSTANT, BASE_URL, wordLimit } from '../utils/constants';
 
 // Your web app's Firebase configuration
@@ -172,10 +172,9 @@ export function uploadFile(file, title, failureToast, color = null, token = null
       }
 
       // process text to chunks
-      const chunks = chunkify(rawContent);
+      const chunks = chunkifyByParagraph(rawContent);
 
       const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
-
       const docRef = await addDoc(collection(db, docPath), {
         title,
         color,
@@ -261,7 +260,8 @@ export function deleteFile(id, title) {
 }
 
 export function pushUserNote(readingId, note, chunkNum, successCallback, errorCallback) {
-  const noteRef = doc(collection(db, `Users/${auth.currentUser.uid}/readings`), `${readingId}`);
+  const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+  const noteRef = doc(collection(db, docPath), `${readingId}`);
   return runTransaction(db, (t) => {
     return t.get(noteRef).then((readingDoc) => {
       if (!readingDoc.exists) return;
@@ -276,7 +276,8 @@ export function pushUserNote(readingId, note, chunkNum, successCallback, errorCa
 }
 
 export function getUserNote(readingId, chunkNum, errorCallback) {
-  const noteRef = doc(collection(db, `Users/${auth.currentUser.uid}/readings`), `${readingId}`);
+  const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+  const noteRef = doc(collection(db, docPath), `${readingId}`);
   return getDoc(noteRef)
     .then((readingDoc) => {
       if (readingDoc.exists()) {
@@ -294,7 +295,8 @@ export function getUserNote(readingId, chunkNum, errorCallback) {
 }
 
 export function removeUserNote(readingId, userNoteIndex, chunkNum, successCallback, errorCallback) {
-  const noteRef = doc(collection(db, `Users/${auth.currentUser.uid}/readings`), `${readingId}`);
+  const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+  const noteRef = doc(collection(db, docPath), `${readingId}`);
   return runTransaction(db, (t) => {
     return t.get(noteRef).then((readingDoc) => {
       if (!readingDoc.exists) return;
@@ -311,7 +313,7 @@ export function removeUserNote(readingId, userNoteIndex, chunkNum, successCallba
 
 // OPENAI SUMMARY PROCESSING
 // =========================================================================================================
-export async function makeSummaries(fileID, chunkList, token, customPrompt = null) {
+export async function makeSummaries(fileID, chunkList, token = null, customPrompt = null) {
   const contentArray = chunkList.map((chunk) => chunk.content);
   console.log(contentArray);
 
@@ -324,7 +326,8 @@ export async function makeSummaries(fileID, chunkList, token, customPrompt = nul
   console.log(`array: ${summaryArray}`);
 
   // from chatgpt
-  const documentRef = doc(db, `Users/${auth.currentUser.uid}/readings`, fileID);
+  const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+  const documentRef = doc(db, docPath, fileID);
   const updatedChunks = chunkList.map((chunk, index) => {
     // Replace the summary of each chunk with the new summary from newSummaries
     return { ...chunk, summary: summaryArray[index] };

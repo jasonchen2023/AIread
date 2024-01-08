@@ -19,8 +19,8 @@ function ReadingHeader(props) {
   const onGenerateClick = async () => {
     try {
       setIsLoading(true);
-      const token = await auth.currentUser.getIdToken();
-      makeSummaries(selectedFile.id, selectedFile.chunks, token)
+      // const token = await auth.currentUser.getIdToken();
+      makeSummaries(selectedFile.id, selectedFile.chunks)
         .then(() => {
           toast.success('Summaries generated!');
           setIsLoading(false);

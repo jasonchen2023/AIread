@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
+import styles from './styles.module.scss';
 
 function SelectFileButton({ onFileSelect }) {
   const fileInputRef = useRef(null);
@@ -29,7 +30,7 @@ function SelectFileButton({ onFileSelect }) {
         style={{ display: 'none' }}
         onChange={onChange}
       />
-      <button type="button" onClick={handleClick}>Upload PDF</button>
+      <button type="button" className={styles.uploadButton} onClick={handleClick}>Upload PDF</button>
     </div>
   );
 }

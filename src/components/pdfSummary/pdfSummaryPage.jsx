@@ -119,7 +119,7 @@ function PdfSummaryPage(props) {
   );
 }
 
-function ReadingWrapper() {
+function ReadingWrapper(props) {
   return (
     <div
       className={style.container}
