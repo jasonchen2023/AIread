@@ -77,3 +77,75 @@
   height: 22px;
   cursor: pointer;
 }
+
+.alert {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  background-color: white !important;
+  border: solid;
+  border-width: 2.5px !important;
+  border-color: grey !important;
+  border-radius: 10px !important;
+  padding: 20px;
+  width: 400px;
+  text-align: center;
+}
+
+
+.alert-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.confirm-delete-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+
+.alert-delete-btn {
+  /* background-color: #f44336; */
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding-top: 15px;
+  padding-bottom: 15px; 
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 20px;
+  width: 90px !important;
+  background-color: #95cbfe !important;
+}
+
+.alert-delete-btn:hover {
+  background-color: #6cb4f8 !important;
+}
+
+.alert-btn-no {
+  background-color: #d3d3d3 !important;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  padding-top: 15px;
+  padding-bottom: 15px; 
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 20px;
+  width: 90px !important;
+}
+
+.alert-btn-no:hover {
+  background-color: #959595 !important;
+}
