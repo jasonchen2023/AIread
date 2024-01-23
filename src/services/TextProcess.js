@@ -1,5 +1,7 @@
 // processFile.js
 import axios from 'axios';
+// import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import { ANOTHER_CONSTANT } from '../utils/constants';
 
 export async function convertPDFtoText(url) {
   try {
@@ -57,53 +59,17 @@ export function chunkifyByParagraph(rawContent, wordsPerChunk = 300) {
   return chunks;
 }
 
-function getChunkWordCount(chunk) {
-  const wordCount = {};
-
-  chunk.forEach((word) => {
-    wordCount[word] = (wordCount[word] || 0) + 1;
-  });
-
-  return wordCount;
+// need to pass in fileId and userId
+export async function saveTextForChat(fileId, content) {
+  const res = await axios.post(`${ANOTHER_CONSTANT}/embeddings`, { fileId, content });
+  return res;
 }
 
-function getChunkContent(rawContent, wordsPerChunk, overlap) {
-  const words = rawContent.split(' ');
-  const chunks = [];
-  let currentChunk = [];
+// export async function splitTextForSummary(content) {
+//   const splitter = new RecursiveCharacterTextSplitter({
+//     chunkSize: 5000,
+//     chunkOverlap: 50,
+//   });
 
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < words.length; i++) {
-    // eslint-disable-next-line no-useless-escape
-    const word = words[i].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
-    currentChunk.push(word.toLowerCase());
-
-    if (currentChunk.length >= wordsPerChunk) {
-      chunks.push({ content: currentChunk });
-      i = Math.max(0, i - overlap);
-      currentChunk = [];
-    }
-  }
-
-  if (currentChunk.length > 0) {
-    chunks.push({ content: currentChunk });
-  }
-
-  return chunks;
-}
-
-export function chunkifyByWords(rawContent, wordsPerChunk = 1000, overlap = 200) {
-  const chunks = getChunkContent(rawContent, wordsPerChunk, overlap);
-  const padding = overlap / 2;
-
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < chunks.length; i++) {
-    let chunk = chunks[i].content;
-    chunk = i > 0 ? chunk.slice(padding) : chunk; // do not count first words (to avoid duplicate counting)
-    chunk = i < chunks.length - 1 ? chunk.slice(0, -padding) : chunk; // do not count last words (to avoid duplicate counting)
-
-    chunks[i].wordCount = getChunkWordCount(chunk);
-    chunks[i].content = chunks[i].content.join(' ');
-  }
-  return chunks;
-}
+//   const texts = await splitter.createDocuments([content]);
+// }

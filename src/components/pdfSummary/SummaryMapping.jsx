@@ -63,6 +63,7 @@ function SummaryMapping(props) {
         style={{ borderRadius: '5px', fontFamily: props.fontStyleContent }}
         boxShadow="base"
         mb={isMobile ? 4 : 0}
+        onMouseUp={props.handleMouseUp}
       >
         <ReactMarkdown components={ChakraUIRenderer()} children={replaceWithBr(props.content)} rehypePlugins={[rehypeRaw]} />
       </Box>
@@ -78,7 +79,7 @@ function SummaryMapping(props) {
         <Box style={{ fontFamily: props.fontStyleSummary }}>
           <ReactMarkdown components={ChakraUIRenderer()} children={props.summary} skipHtml />
         </Box>
-        <Notes chunkNum={props.chunkNum} text={props.userNote} />
+        {/* <Notes chunkNum={props.chunkNum} text={props.userNote} /> */}
         {giveSummaryStatus(props)}
       </Box>
     </Flex>

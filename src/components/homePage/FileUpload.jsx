@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import ConvertApi from 'convertapi-js';
 import { uploadFile, auth } from '../../services/firebase';
 import FileUploadModal from './fileUploadModal';
+import { saveTextForChat } from '../../services/TextProcess';
 
 function FileUpload() {
   const [dragActive, setDragActive] = useState(false);
@@ -69,7 +70,10 @@ function FileUpload() {
       toast('No File Selected');
     } else {
       setSelectedFile(null);
-      const fileId = await uploadFile(file, title, failureToast, color, token);
+
+      // to be fixed:
+      const { fileId, content } = await uploadFile(file, title, failureToast, color, token);
+      const res = await saveTextForChat(fileId, content);
       window.location.href = `/reading/${fileId}`;
     }
   };

@@ -39,8 +39,8 @@ function ReadingHeader(props) {
     // Handle custom prompt logic here
     console.log('Custom Prompt:', customPrompt);
     setIsLoading(true);
-    const token = await auth.currentUser.getIdToken();
-    makeSummaries(selectedFile.id, selectedFile.chunks, token, customPrompt)
+    // const token = await auth.currentUser.getIdToken();
+    makeSummaries(selectedFile.id, selectedFile.chunks, null, customPrompt)
       .then(() => {
         toast.success('Summaries generated!');
         setIsLoading(false);
