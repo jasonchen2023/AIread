@@ -1,9 +1,10 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import SelectFileButton from '../selectFile/SelectFileButton';
-import { uploadFile } from '../../services/firebase';
+import { uploadFile, uploadDocumentSummary } from '../../services/firebase';
 import styles from './styles.module.scss';
 import demo from '../../assets/aiReadDemo.png';
+import { saveTextForChat } from '../../services/TextProcess';
 
 export default function Landing(props) {
   const failureToast = (err) => {
@@ -11,9 +12,20 @@ export default function Landing(props) {
   };
 
   const handleFileSelect = async (file) => {
-    const fileId = await uploadFile(file, file.name, failureToast);
-    console.log(file);
+    // const fileId = await uploadFile(file, file.name, failureToast);
+    // console.log(file);
+    // window.location.href = `/demo/${fileId}`;
+
+    // const response = await saveTextForChat('hello');
+    // console.log('response from embedding: ', response.data);
+
+    const { fileId, rawContent } = await uploadFile(file, file.name, failureToast);
+    const res = await saveTextForChat(fileId, rawContent);
+    const summaryRes = await uploadDocumentSummary(fileId, rawContent);
+    // const output = await uploadSummary(rawContent);
+
     window.location.href = `/demo/${fileId}`;
+    console.log(res);
   };
 
   return (

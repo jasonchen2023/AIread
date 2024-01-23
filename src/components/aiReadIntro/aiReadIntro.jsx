@@ -7,6 +7,7 @@ import background from '../../assets/background2.svg';
 import aiIntro from '../../assets/aiReadDemo.png';
 import SelectFileButton from '../selectFile/SelectFileButton';
 import { uploadFile } from '../../services/firebase';
+import { saveTextForChat } from '../../services/TextProcess';
 
 export default function AIreadIntro(props) {
   const failureToast = (err) => {
@@ -14,9 +15,13 @@ export default function AIreadIntro(props) {
   };
 
   const handleFileSelect = async (file) => {
-    const fileId = await uploadFile(file, file.name, failureToast);
-    console.log(file);
-    window.location.href = `/demo/${fileId}`;
+    // const fileId = await uploadFile(file, file.name, failureToast);
+    // console.log(file);
+
+    const { fileId, content } = await uploadFile(file, file.name, failureToast);
+    const res = await saveTextForChat(fileId, content);
+    console.log(res);
+    // window.location.href = `/demo/${fileId}`;
   };
 
   return (
