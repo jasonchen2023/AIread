@@ -6,7 +6,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'fire
 import axios from 'axios';
 import { getAnalytics } from 'firebase/analytics';
 import { ActionTypes } from '../actions';
-import { convertPDFtoText, chunkifyByParagraph } from './processFile';
+import { convertPDFtoText, chunkifyByParagraph } from './TextProcess';
 import { ANOTHER_CONSTANT, BASE_URL, wordLimit } from '../utils/constants';
 
 // Your web app's Firebase configuration
@@ -153,7 +153,7 @@ export function uploadFile(file, title, failureToast, color = null, token = null
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
     try {
-      const storageRef = ref(getStorage(), auth.currentUser ? `${auth.currentUser.uid}/${file.name}` : `demo/${file.name}`);
+      const storageRef = ref(getStorage(), auth.currentUser ? `Users/${auth.currentUser.uid}/${file.name}` : `demo/${file.name}`);
       await uploadBytes(storageRef, file);
 
       const url = await getDownloadURL(storageRef);
@@ -185,7 +185,8 @@ export function uploadFile(file, title, failureToast, color = null, token = null
         chunks,
       });
 
-      resolve(docRef.id);
+      const fileId = docRef.id;
+      resolve({ fileId, rawContent });
     } catch (error) {
       console.error('Error uploading file:', error);
       failureToast(error.message);
@@ -249,7 +250,7 @@ export function deleteFile(id, title) {
       console.error('Error deleting document:', error);
     });
 
-  const storageRef = ref(getStorage(), `${auth.currentUser.uid}/${title}`);
+  const storageRef = ref(getStorage(), `Users/${auth.currentUser.uid}/${title}`);
 
   // Delete the file
   deleteObject(storageRef).then(() => {
@@ -273,6 +274,37 @@ export function pushUserNote(readingId, note, chunkNum, successCallback, errorCa
   }).catch(() => {
     errorCallback();
   });
+}
+
+export async function saveUserNote(readingId, note, successCallback, errorCallback) {
+  try {
+    const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+    const documentRef = doc(db, docPath, readingId);
+    await updateDoc(documentRef, { notes: note });
+
+    successCallback();
+  } catch (error) {
+    errorCallback(error);
+  }
+}
+
+export function getUserNoteNew(readingId, errorCallback) {
+  const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+  const noteRef = doc(collection(db, docPath), `${readingId}`);
+  return getDoc(noteRef)
+    .then((readingDoc) => {
+      if (readingDoc.exists()) {
+        const userNotes = readingDoc.data().notes;
+        console.log('userNotes:', userNotes);
+        return userNotes;
+      } else {
+        return Promise.reject(new Error('Document does not exist.'));
+      }
+    })
+    .catch((error) => {
+      errorCallback();
+      return Promise.reject(error);
+    });
 }
 
 export function getUserNote(readingId, chunkNum, errorCallback) {
@@ -333,4 +365,32 @@ export async function makeSummaries(fileID, chunkList, token = null, customPromp
     return { ...chunk, summary: summaryArray[index] };
   });
   await updateDoc(documentRef, { chunks: updatedChunks });
+}
+
+async function getSummary(chunkList, prompt, maxTokens, promptType) {
+  const res = await axios.post(`${ANOTHER_CONSTANT}/summaries`, {
+    summaryType: 'document',
+    content: chunkList,
+    prompt,
+    maxTokens,
+    promptType,
+  });
+  return res.data;
+}
+
+export async function uploadDocumentSummary(fileID, content) {
+  const chunkList = chunkifyByParagraph(content, 3000);
+  const contentArray = chunkList.map((chunk) => chunk.content);
+
+  const maxTokenPerChunk = 1000 / chunkList.length;
+
+  const prompt = 'Please summarize and preserve as much text as possible. This will be passed in as document context to help answer user questions';
+  const promptType = 'chat-context';
+  const summaryList = await getSummary(contentArray, prompt, maxTokenPerChunk, promptType);
+
+  const summary = summaryList.map((chunk) => chunk[1]).join('');
+
+  const docPath = auth.currentUser ? `Users/${auth.currentUser.uid}/readings` : 'demo';
+  const documentRef = doc(db, docPath, fileID);
+  await updateDoc(documentRef, { summary });
 }

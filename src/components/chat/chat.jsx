@@ -1,24 +1,27 @@
 /* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button, Input } from '@chakra-ui/react';
 import style from './style.module.scss';
 import { processChat } from '../../services/chat';
-import { auth } from '../../services/firebase';
+import { auth, uploadDocumentSummary } from '../../services/firebase';
 
 export default function chat(props) {
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState('');
+  // const [response, setResponse] = useState('');
+  const { id } = useParams();
 
   const handleSubmit = async () => {
     if (prompt) {
-      console.log(`prompt: ${prompt}`);
-      console.log('content:', props.fileContent);
       setIsLoading(true);
       try {
-        const token = await auth.currentUser.getIdToken();
-        const res = await processChat(props.fileContent, prompt, token);
-        setResponse(res.data);
+        // const token = await auth.currentUser.getIdToken();
+        const res = await processChat(prompt, id, props.summary);
+        props.setChatResponse(res.data);
+
+        // to be deleted, and uncomment top two lines
+        // uploadDocumentSummary(id, props.fileContent);
       } catch (err) {
         console.log(`error: ${err}`);
       }
@@ -51,8 +54,8 @@ export default function chat(props) {
           Submit
         </Button>
       </div>
-      {response.length > 0 && (
-        <p className={style.responseText}>{response}</p>
+      {props.chatResponse.length > 0 && (
+        <p className={style.responseText}>{props.chatResponse}</p>
       )}
     </div>
   );
