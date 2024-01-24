@@ -37,7 +37,7 @@ export default function chat(props) {
       <p className={style.warningText}>The model may occasionally provide false information</p>
       <div className={style.inputWrapper}>
         <Input
-          placeholder="Who was Mark Twain?"
+          placeholder=""
           value={prompt}
           onChange={(e) => { setPrompt(e.target.value); }}
           sx={{ '::placeholder': { fontStyle: 'italic' }, borderRadius: '5px 0 0 5px' }}

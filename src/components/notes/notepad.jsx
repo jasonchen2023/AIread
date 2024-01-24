@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import ReactMarkdown from 'react-markdown';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
@@ -82,28 +81,7 @@ function NotePad(props) {
     } else {
       return (
         <div id="note-input-box">
-          <TextareaAutosize id="notesTextArea" onChange={updateNoteContent} value={text} />
-        </div>
-      );
-    }
-  };
-
-  const renderNotesHeader = () => {
-    if (isEditing) {
-      return (
-        <div id="note-header" onClick={() => setIsEditing(true)}>
-          <span className="notes-title">Notes</span>:
-          <button type="button" id="save-button" onClick={onSaveClick}>Save Note</button>
-          <button type="button" id={markdownMode ? 'markdown-button-on' : 'markdown-button-off'} onClick={onMarkdownSelect}>  <img src={markdownIcon} alt="Markdown" /></button>
-        </div>
-      );
-    } else {
-      return (
-
-        <div id="note-header">
-          <span className="notes-title">Notes</span>:
-          <button type="button" onClick={onEditClick}>Edit Note</button>
-          <button type="button" id={markdownMode ? 'markdown-button-on' : 'markdown-button-off'} onClick={onMarkdownSelect}>  <img src={markdownIcon} alt="Markdown" /></button>
+          <textarea id="notesTextArea" onChange={updateNoteContent} value={text} />
         </div>
       );
     }
@@ -111,13 +89,11 @@ function NotePad(props) {
 
   return (
     <div id="notepad-container">
-      {/* {renderNotesHeader()} */}
       <div id="note-header">
-        <span className="notes-title">Notes</span>
-        <button type="button" className={markdownMode ? 'markdown-button button-on' : 'markdown-button'} onClick={onMarkdownSelect}>
+        {/* <button type="button" className={markdownMode ? 'markdown-button button-on' : 'markdown-button'} onClick={onMarkdownSelect}>
           <img id="markdown-icon" src={markdownIcon} alt="Markdown" />
-        </button>
-        <button type="button" id="save-button" onClick={onSaveClick}>Save Note</button>
+        </button> */}
+        <button type="button" id="save-button" onClick={onSaveClick}>Save</button>
       </div>
       {renderTextSection()}
     </div>

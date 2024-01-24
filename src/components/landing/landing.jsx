@@ -12,20 +12,11 @@ export default function Landing(props) {
   };
 
   const handleFileSelect = async (file) => {
-    // const fileId = await uploadFile(file, file.name, failureToast);
-    // console.log(file);
-    // window.location.href = `/demo/${fileId}`;
-
-    // const response = await saveTextForChat('hello');
-    // console.log('response from embedding: ', response.data);
-
     const { fileId, rawContent } = await uploadFile(file, file.name, failureToast);
     const res = await saveTextForChat(fileId, rawContent);
     const summaryRes = await uploadDocumentSummary(fileId, rawContent);
-    // const output = await uploadSummary(rawContent);
 
     window.location.href = `/demo/${fileId}`;
-    console.log(res);
   };
 
   return (

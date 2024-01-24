@@ -15,6 +15,7 @@ import TextHighlightPopup from './textHighlightPopup';
 
 import './reading.module.scss';
 import chatIcon from '../../img/chat.png';
+import noteIcon from '../../img/note.png';
 import closeIcon from '../../img/close-button.png'; // from https://www.flaticon.com/free-icon/close-button_106830
 
 import { textInteractions } from '../../utils/constants';
@@ -156,7 +157,7 @@ function PdfSummaryPage(props) {
           )}
 
           {!isNoteVisible ? (
-            <img id={style.noteIcon} className={style.iconBorder} alt="note icon" src={chatIcon} onClick={toggleNoteBox} />
+            <img id={style.noteIcon} className={style.iconBorder} alt="note icon" src={noteIcon} onClick={toggleNoteBox} />
           ) : (
             <img id={style.closeNoteIcon} alt="close icon" src={closeIcon} onClick={toggleNoteBox} />
           )}

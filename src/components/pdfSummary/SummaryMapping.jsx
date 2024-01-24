@@ -7,7 +7,6 @@ import ReactMarkdown from 'react-markdown';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import rehypeRaw from 'rehype-raw';
 import styles from './styles.module.scss';
-import Notes from '../notes/notes';
 
 function giveSummaryStatus(props) {
   let colorScheme = '';
