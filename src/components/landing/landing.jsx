@@ -3,7 +3,9 @@ import { toast } from 'react-toastify';
 import SelectFileButton from '../selectFile/SelectFileButton';
 import { uploadFile, uploadDocumentSummary } from '../../services/firebase';
 import styles from './styles.module.scss';
-import demo from '../../assets/aiReadDemo.png';
+import demo from '../../assets/demo.png';
+import chat from '../../assets/chat.png';
+import textAnalysis from '../../assets/text-analysis.png';
 import { saveTextForChat } from '../../services/TextProcess';
 
 export default function Landing(props) {
@@ -36,12 +38,12 @@ export default function Landing(props) {
           <img src={demo} alt="Demo" className={styles.featureImage} />
         </div>
         <div className={styles.featureBox}>
-          <img src={demo} alt="Demo" className={styles.featureImage} />
+          <img src={chat} alt="Chat" className={styles.chatImage} />
           <p className={styles.featureDescription}> Get quick document insights through interactive chat</p>
         </div>
         <div className={styles.featureBox}>
-          <p className={styles.featureDescription}> Add notes to your summaries! Highlight key points, add your own insights, and make AI summaries your own.</p>
-          <img src={demo} alt="Demo" className={styles.featureImage} />
+          <p className={styles.featureDescription}> Analyze highlighted text easily! No more copying and pasting.</p>
+          <img src={textAnalysis} alt="Analyze text" className={styles.analyzeTextImage} />
         </div>
       </div>
 
