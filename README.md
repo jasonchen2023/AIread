@@ -10,6 +10,7 @@ Alternatively, users can also pass in custom prompts to translate or analyze the
 
 Additional features further allow users to chat with their document, analyze highlighted text directly, and take notes on the platform.
 
+![Demo](src/assets/demo.png)
 
 ## Architecture
 
@@ -20,3 +21,7 @@ Firebase Storage stores uploaded PDFs and Cloud Firestore stores the PDF text, s
 ## Setup
 
 Run `npm install` and then `npm run dev`
+
+# Acknowledgements
+
+Prototype built by Jason Chen, Thomas Fenaroli, Stanley Gao, and Noah Yusen in CS52. 
